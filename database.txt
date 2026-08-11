@@ -1,0 +1,55 @@
+-- ==========================================
+-- Simplified Database Schema for CMP-Core-reg6 (Supabase)
+-- * memo_documents table has been removed *
+-- ==========================================
+
+-- 1. Create Signatories Table (ผู้มีอำนาจลงนาม)
+CREATE TABLE public.signatories (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE DEFAULT auth.uid(),
+    name TEXT NOT NULL,
+    position TEXT NOT NULL,
+    signature_url TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. Create Customers Table (ฐานข้อมูลลูกค้า)
+CREATE TABLE public.customers (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    post_code TEXT NOT NULL, -- คงรูปแบบ Text ตามต้นฉบับเป๊ะๆ
+    post_name TEXT NOT NULL,
+    customer_name TEXT NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3. Create Title Prefixes Table (คำนำหน้า)
+CREATE TABLE public.title_prefixes (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    prefix_text TEXT NOT NULL, 
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ==========================================
+-- Row Level Security (RLS) Policies
+-- ==========================================
+
+ALTER TABLE public.signatories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.customers ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.title_prefixes ENABLE ROW LEVEL SECURITY;
+
+-- 1. Signatories: จัดการผู้มีอำนาจลงนามของตนเองเท่านั้น
+CREATE POLICY "Manage own signatories" 
+ON public.signatories FOR ALL 
+USING (auth.uid() = user_id);
+
+-- 2. Customers: ดูข้อมูลลูกค้าได้เฉพาะคนที่ post_code ตรงกับ Metadata ใน Token ของตัวเอง
+CREATE POLICY "View customers by JWT post_code" 
+ON public.customers FOR SELECT 
+USING (
+    post_code = (auth.jwt() -> 'user_metadata' ->> 'post_code')
+);
+
+-- 3. Prefixes: ทุกคนสามารถดึงคำนำหน้าไปใช้งานได้
+CREATE POLICY "Read prefixes" 
+ON public.title_prefixes FOR SELECT 
+USING (true);

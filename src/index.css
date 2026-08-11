@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+:root {
+  /* Colors — Brand & Accent */
+  --primary: #FCD535;
+  --primary-active: #f0b90b;
+  --primary-disabled: #3a3a1f;
+  --accent-turquoise: #2dbdb6;
+
+  /* Colors — Surface (Dark) */
+  --canvas-dark: #0b0e11;
+  --surface-card-dark: #1e2329;
+  --surface-elevated-dark: #2b3139;
+
+  /* Colors — Surface (Light / Transactional) */
+  --canvas-light: #ffffff;
+  --surface-soft-light: #fafafa;
+  --surface-strong-light: #f5f5f5;
+
+  /* Colors — Hairlines & Borders */
+  --hairline-on-light: #eaecef;
+  --hairline-on-dark: #2b3139;
+  --border-strong: #cdd1d6;
+
+  /* Colors — Text */
+  --ink: #181a20;
+  --body: #eaecef;
+  --body-on-light: #181a20;
+  --muted: #707a8a;
+  --muted-strong: #929aa5;
+  --on-primary: #181a20;
+  --on-dark: #ffffff;
+
+  /* Colors — Semantic */
+  --trading-up: #0ecb81;
+  --trading-down: #f6465d;
+  --info: #3b82f6;
+  --info-ring: rgba(59, 130, 246, 0.5);
+
+  /* Spacing — 4px multiple scale */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-section: 80px;
+
+  /* Border Radius */
+  --rounded-xs: 2px;
+  --rounded-sm: 4px;
+  --rounded-md: 6px;
+  --rounded-lg: 8px;
+  --rounded-xl: 12px;
+  --rounded-pill: 9999px;
+
+  /* Typography Base */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ── Global Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--canvas-light);
+  color: var(--body-on-light);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink);
+  font-weight: 600;
+  margin: 0;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+/* ── Typography Utility Classes ── */
+.text-hero-display {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.text-display-lg {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.text-display-md {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+.text-display-sm {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.text-title-lg {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.text-title-md {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.text-title-sm {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.text-body-md {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.text-body-sm {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.text-caption {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.text-button {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+.text-muted {
+  color: var(--muted);
+}
+
+/* ── Print Styles ── */
+@media print {
+  @page {
+    margin: 0; /* Remove browser default margins completely to maximize space */
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: 'TH Sarabun PSK', 'TH Sarabun New', 'Sarabun', sans-serif !important;
+    font-size: 16px;
+    line-height: 1.25; /* Tighter line height to save vertical space */
+    margin: 0; /* Reset body margin */
+    padding: 0;
+  }
+
+  /* Hide everything except the print preview */
+  .no-print {
+    display: none !important;
+  }
+
+  .print-area {
+    display: block !important;
+  }
+
+  .print-page {
+    page-break-after: always;
+    padding: 0 15mm; /* 0 top/bottom padding to maximize space, 15mm sides */
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    /* Removed min-height to prevent unwanted blank pages */
+  }
+
+  .print-page:last-child {
+    page-break-after: auto;
+  }
+
+  .print-logo-container {
+    margin-bottom: 5px; /* Compressed */
+  }
+
+  .print-logo {
+    width: 380px;
+    max-height: 100px;
+    object-fit: contain;
+    object-position: left;
+  }
+
+  .print-letter-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px; /* Compressed */
+    align-items: flex-start;
+  }
+
+  .print-ref {
+    width: 45%;
+  }
+
+  .print-sender {
+    width: 50%;
+  }
+
+  .print-date {
+    margin-left: 50%; /* Center start point for formal letters */
+    margin-bottom: 16px;
+  }
+
+  .print-subject-block {
+    margin-bottom: 12px;
+  }
+
+  .print-meta-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .print-meta-table td {
+    vertical-align: top;
+    padding: 0;
+  }
+
+  .print-meta-table .meta-label {
+    width: 110px;
+    white-space: nowrap;
+  }
+
+  .print-body-text {
+    margin-bottom: 12px;
+    text-align: justify;
+    text-justify: distribute;
+  }
+
+  .print-body-text p {
+    text-indent: 2.5cm; /* Standard Thai paragraph indent */
+    margin-bottom: 4px;
+    margin-top: 0;
+  }
+
+  .print-list {
+    margin-left: 2.5cm;
+    margin-bottom: 4px;
+  }
+
+  .print-list-item {
+    display: flex;
+    margin-bottom: 2px;
+  }
+
+  .print-list-num {
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .print-list-text {
+    text-align: justify;
+    text-justify: distribute;
+  }
+
+  .print-signature-block {
+    text-align: center;
+    margin-left: 50%; /* Right align the signature block */
+    margin-top: 20px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-signoff {
+    margin-bottom: 8px;
+  }
+
+  .print-signature-img-container {
+    height: 50px; /* Fixed space for signature */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .print-signature-img {
+    max-width: 150px;
+    max-height: 50px;
+    object-fit: contain;
+  }
+
+  .print-signature-name {
+    margin-bottom: 2px;
+  }
+
+  .print-footer {
+    margin-top: 40px;
+    font-size: 14px;
+  }
+}
