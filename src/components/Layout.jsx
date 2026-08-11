@@ -58,6 +58,7 @@ export default function Layout({ session, children }) {
           <NavItem to="/" label="ข้อมูลลูกค้า" />
           <NavItem to="/signatories" label="ผู้ลงนาม" />
           <NavItem to="/guide" label="แนะนำการใช้งาน" />
+          <NavItem to="/developer" label="ผู้พัฒนา" />
         </div>
 
         {/* Right — User & Logout */}

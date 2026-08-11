@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import Login from './pages/Login'
 import Customers from './pages/Customers'
 import Signatories from './pages/Signatories'
+import Developer from './pages/Developer'
 import HowToGuide from './components/HowToGuide'
 import './index.css'
 
@@ -86,6 +87,20 @@ function App() {
             session ? (
               <Layout session={session}>
                 <HowToGuide />
+              </Layout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        {/* Protected — Developer */}
+        <Route
+          path="/developer"
+          element={
+            session ? (
+              <Layout session={session}>
+                <Developer />
               </Layout>
             ) : (
               <Navigate to="/login" replace />
