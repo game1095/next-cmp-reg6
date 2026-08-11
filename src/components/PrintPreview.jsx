@@ -28,8 +28,9 @@ export default function PrintPreview({
   const formattedDate = `${day} ${month} ${year}`;
 
   return (
-    <div className="print-area" style={{ display: "none" }}>
-      {customers.map((customer, index) => {
+    <div className="print-wrapper" style={{ overflow: "hidden", height: 0, width: 0, position: "absolute", top: 0, left: 0 }}>
+      <div className="print-area" style={{ width: "210mm" }}>
+        {customers.map((customer, index) => {
         // Pad the sequence with leading zeros (e.g., cmp001, cmp015)
         const paddedSequence = String(customer.sequence || index + 1).padStart(
           3,
@@ -153,6 +154,7 @@ export default function PrintPreview({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

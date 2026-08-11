@@ -58,6 +58,25 @@
 
   /* Typography Base */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Theme Mapping (Light Default) */
+  --theme-canvas: var(--canvas-light);
+  --theme-surface: var(--canvas-light);
+  --theme-surface-strong: var(--surface-strong-light);
+  --theme-border: var(--hairline-on-light);
+  --theme-border-strong: var(--border-strong);
+  --theme-ink: var(--ink);
+  --theme-body: var(--body-on-light);
+}
+
+[data-theme="dark"] {
+  --theme-canvas: var(--canvas-dark);
+  --theme-surface: var(--surface-card-dark);
+  --theme-surface-strong: var(--surface-elevated-dark);
+  --theme-border: var(--hairline-on-dark);
+  --theme-border-strong: var(--border-strong);
+  --theme-ink: var(--on-dark);
+  --theme-body: var(--body);
 }
 
 /* ── Global Reset ── */
@@ -69,8 +88,8 @@
 
 body {
   font-family: var(--font-family);
-  background-color: var(--canvas-light);
-  color: var(--body-on-light);
+  background-color: var(--theme-canvas);
+  color: var(--theme-body);
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -78,7 +97,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--ink);
+  color: var(--theme-ink);
   font-weight: 600;
   margin: 0;
 }
@@ -151,158 +170,183 @@ a {
   color: var(--muted);
 }
 
-/* ── Print Styles ── */
+/* ── Print Layout Styles (Used for both window.print and html2pdf) ── */
+.print-area {
+  background: white;
+  color: black;
+  font-family: 'TH Sarabun PSK', 'TH Sarabun New', 'Sarabun', sans-serif;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.print-page {
+  page-break-after: always;
+  padding: 0 15mm; 
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.print-page:last-child {
+  page-break-after: auto;
+}
+
+.print-logo-container {
+  margin-bottom: 5px; 
+}
+
+.print-logo {
+  width: 380px;
+  max-height: 100px;
+  object-fit: contain;
+  object-position: left;
+}
+
+.print-letter-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px; 
+  align-items: flex-start;
+}
+
+.print-ref {
+  width: 45%;
+}
+
+.print-sender {
+  width: 50%;
+}
+
+.print-date {
+  margin-left: 50%; 
+  margin-bottom: 16px;
+}
+
+.print-subject-block {
+  margin-bottom: 12px;
+}
+
+.print-meta-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.print-meta-table td {
+  vertical-align: top;
+  padding: 0;
+}
+
+.print-meta-table .meta-label {
+  width: 110px;
+  white-space: nowrap;
+}
+
+.print-body-text {
+  margin-bottom: 12px;
+  text-align: justify;
+  text-justify: distribute;
+}
+
+.print-body-text p {
+  text-indent: 2.5cm; 
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+.print-list {
+  margin-left: 2.5cm;
+  margin-bottom: 4px;
+}
+
+.print-list-item {
+  display: flex;
+  margin-bottom: 2px;
+}
+
+.print-list-num {
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.print-list-text {
+  text-align: justify;
+  text-justify: distribute;
+}
+
+.print-signature-block {
+  text-align: center;
+  margin-left: 50%; 
+  margin-top: 20px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.print-signoff {
+  margin-bottom: 8px;
+}
+
+.print-signature-img-container {
+  height: 50px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.print-signature-img {
+  max-width: 150px;
+  max-height: 50px;
+  object-fit: contain;
+}
+
+.print-signature-name {
+  margin-bottom: 2px;
+}
+
+.print-footer {
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+/* ── Native Print Media Query overrides ── */
 @media print {
   @page {
-    margin: 0; /* Remove browser default margins completely to maximize space */
+    margin: 0; 
   }
 
   body {
     background: white !important;
-    color: black !important;
-    font-family: 'TH Sarabun PSK', 'TH Sarabun New', 'Sarabun', sans-serif !important;
-    font-size: 16px;
-    line-height: 1.25; /* Tighter line height to save vertical space */
-    margin: 0; /* Reset body margin */
+    margin: 0; 
     padding: 0;
   }
 
-  /* Hide everything except the print preview */
   .no-print {
     display: none !important;
   }
 
   .print-area {
     display: block !important;
+    opacity: 1 !important;
+    position: static !important;
+    z-index: 1 !important;
   }
 
-  .print-page {
-    page-break-after: always;
-    padding: 0 15mm; /* 0 top/bottom padding to maximize space, 15mm sides */
-    position: relative;
-    box-sizing: border-box;
-    width: 100%;
-    /* Removed min-height to prevent unwanted blank pages */
+  .print-wrapper {
+    overflow: visible !important;
+    height: auto !important;
+    width: auto !important;
   }
+}
 
-  .print-page:last-child {
-    page-break-after: auto;
-  }
+/* ── Skeleton Loading ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--theme-surface-strong) 25%, var(--theme-border) 50%, var(--theme-surface-strong) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: var(--rounded-md);
+}
 
-  .print-logo-container {
-    margin-bottom: 5px; /* Compressed */
-  }
-
-  .print-logo {
-    width: 380px;
-    max-height: 100px;
-    object-fit: contain;
-    object-position: left;
-  }
-
-  .print-letter-head {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px; /* Compressed */
-    align-items: flex-start;
-  }
-
-  .print-ref {
-    width: 45%;
-  }
-
-  .print-sender {
-    width: 50%;
-  }
-
-  .print-date {
-    margin-left: 50%; /* Center start point for formal letters */
-    margin-bottom: 16px;
-  }
-
-  .print-subject-block {
-    margin-bottom: 12px;
-  }
-
-  .print-meta-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .print-meta-table td {
-    vertical-align: top;
-    padding: 0;
-  }
-
-  .print-meta-table .meta-label {
-    width: 110px;
-    white-space: nowrap;
-  }
-
-  .print-body-text {
-    margin-bottom: 12px;
-    text-align: justify;
-    text-justify: distribute;
-  }
-
-  .print-body-text p {
-    text-indent: 2.5cm; /* Standard Thai paragraph indent */
-    margin-bottom: 4px;
-    margin-top: 0;
-  }
-
-  .print-list {
-    margin-left: 2.5cm;
-    margin-bottom: 4px;
-  }
-
-  .print-list-item {
-    display: flex;
-    margin-bottom: 2px;
-  }
-
-  .print-list-num {
-    width: 20px;
-    flex-shrink: 0;
-  }
-
-  .print-list-text {
-    text-align: justify;
-    text-justify: distribute;
-  }
-
-  .print-signature-block {
-    text-align: center;
-    margin-left: 50%; /* Right align the signature block */
-    margin-top: 20px;
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  .print-signoff {
-    margin-bottom: 8px;
-  }
-
-  .print-signature-img-container {
-    height: 50px; /* Fixed space for signature */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 4px;
-  }
-
-  .print-signature-img {
-    max-width: 150px;
-    max-height: 50px;
-    object-fit: contain;
-  }
-
-  .print-signature-name {
-    margin-bottom: 2px;
-  }
-
-  .print-footer {
-    margin-top: 40px;
-    font-size: 14px;
-  }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

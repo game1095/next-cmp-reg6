@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase, TABLES } from '../lib/supabase';
 import Button from '../components/Button';
 import SignatoryModal from '../components/SignatoryModal';
+import Swal from 'sweetalert2';
 
 export default function Signatories() {
   const [signatories, setSignatories] = useState([]);
@@ -11,9 +12,6 @@ export default function Signatories() {
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
-
-  // Delete confirmation
-  const [deleteId, setDeleteId] = useState(null);
 
   // Default signatory state
   const [defaultId, setDefaultId] = useState(localStorage.getItem('default_signatory_id'));
@@ -48,6 +46,21 @@ export default function Signatories() {
   };
 
   const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: 'ลบผู้ลงนาม?',
+      text: "คุณจะไม่สามารถกู้คืนข้อมูลและลายเซ็นนี้ได้!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--trading-down)',
+      cancelButtonColor: 'var(--muted)',
+      confirmButtonText: 'ลบข้อมูล',
+      cancelButtonText: 'ยกเลิก',
+      background: 'var(--theme-canvas)',
+      color: 'var(--theme-ink)',
+    });
+
+    if (!result.isConfirmed) return;
+
     const { error } = await supabase
       .from(TABLES.SIGNATORIES)
       .delete()
@@ -60,8 +73,15 @@ export default function Signatories() {
         localStorage.removeItem('default_signatory_id');
         setDefaultId(null);
       }
-      setDeleteId(null);
       fetchSignatories();
+      Swal.fire({
+        icon: 'success',
+        title: 'ลบสำเร็จ',
+        showConfirmButton: false,
+        timer: 1500,
+        background: 'var(--theme-canvas)',
+        color: 'var(--theme-ink)',
+      });
     }
   };
 
@@ -104,27 +124,46 @@ export default function Signatories() {
 
       {/* ── Loading ── */}
       {loading && (
-        <div style={{ padding: '48px', textAlign: 'center', color: 'var(--muted)' }}>
-          กำลังโหลด...
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+          gap: 'var(--spacing-md)',
+        }}>
+          {[1, 2, 3].map(i => (
+            <div key={i} style={{
+              border: '1px solid var(--theme-border)',
+              borderRadius: 'var(--rounded-xl)',
+              padding: 'var(--spacing-lg)',
+              backgroundColor: 'var(--theme-canvas)'
+            }}>
+              <div className="skeleton" style={{ height: '80px', borderRadius: 'var(--rounded-lg)', marginBottom: 'var(--spacing-md)' }}></div>
+              <div className="skeleton" style={{ width: '60%', height: '24px', marginBottom: '8px' }}></div>
+              <div className="skeleton" style={{ width: '40%', height: '16px', marginBottom: 'var(--spacing-md)' }}></div>
+              <div className="skeleton" style={{ height: '32px', borderRadius: 'var(--rounded-md)' }}></div>
+            </div>
+          ))}
         </div>
       )}
 
       {/* ── Empty state ── */}
       {!loading && signatories.length === 0 && (
         <div style={{
-          padding: 'var(--spacing-xxl)',
+          padding: '64px 24px',
           textAlign: 'center',
-          border: '2px dashed var(--hairline-on-light)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 'var(--spacing-md)',
+          border: '1px dashed var(--theme-border)',
           borderRadius: 'var(--rounded-xl)',
-          color: 'var(--muted)',
+          backgroundColor: 'var(--theme-surface-strong)',
         }}>
-          <div style={{ fontSize: '40px', marginBottom: 'var(--spacing-sm)' }}>✍️</div>
-          <p className="text-title-sm" style={{ marginBottom: '4px', color: 'var(--ink)' }}>
-            ยังไม่มีผู้ลงนาม
-          </p>
-          <p className="text-body-md text-muted">
-            เพิ่มผู้มีอำนาจลงนามเพื่อใช้ในการออกเอกสาร
-          </p>
+          <img src="/images/empty.svg" alt="Empty" style={{ width: '160px', height: 'auto', opacity: 0.8 }} />
+          <div style={{ color: 'var(--muted)', fontSize: '15px', fontWeight: 500 }}>
+            ยังไม่มีผู้มีอำนาจลงนามในระบบ
+          </div>
+          <Button onClick={handleAdd}>+ เพิ่มผู้ลงนามเลย</Button>
         </div>
       )}
 
@@ -141,15 +180,21 @@ export default function Signatories() {
             <div
               key={sig.id}
               style={{
-                border: isDefault ? '2px solid var(--primary)' : '1px solid var(--hairline-on-light)',
+                border: isDefault ? '2px solid var(--primary)' : '1px solid var(--theme-border)',
                 borderRadius: 'var(--rounded-xl)',
                 padding: 'var(--spacing-lg)',
-                backgroundColor: isDefault ? 'rgba(0, 102, 255, 0.02)' : 'var(--canvas-light)',
-                transition: 'box-shadow 0.15s, border-color 0.15s',
+                backgroundColor: isDefault ? 'rgba(59, 130, 246, 0.04)' : 'var(--theme-canvas)',
+                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                 position: 'relative',
               }}
-              onMouseOver={(e) => e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.06)'}
-              onMouseOut={(e) => e.currentTarget.style.boxShadow = 'none'}
+              onMouseOver={(e) => {
+                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.06)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
               {isDefault && (
                 <div style={{
@@ -171,7 +216,7 @@ export default function Signatories() {
               {sig.signature_url ? (
                 <div style={{
                   padding: 'var(--spacing-md)',
-                  backgroundColor: 'var(--surface-soft-light)',
+                  backgroundColor: 'var(--theme-surface-strong)',
                   borderRadius: 'var(--rounded-lg)',
                   marginBottom: 'var(--spacing-md)',
                   textAlign: 'center',
@@ -189,7 +234,7 @@ export default function Signatories() {
               ) : (
                 <div style={{
                   padding: 'var(--spacing-md)',
-                  backgroundColor: 'var(--surface-soft-light)',
+                  backgroundColor: 'var(--theme-surface-strong)',
                   borderRadius: 'var(--rounded-lg)',
                   marginBottom: 'var(--spacing-md)',
                   textAlign: 'center',
@@ -205,55 +250,12 @@ export default function Signatories() {
               )}
 
               {/* Info */}
-              <h3 className="text-title-sm" style={{ marginBottom: '4px' }}>{sig.name}</h3>
+              <h3 className="text-title-sm" style={{ marginBottom: '4px', color: 'var(--theme-ink)' }}>{sig.name}</h3>
               <p className="text-body-md text-muted" style={{ marginBottom: 'var(--spacing-md)' }}>
                 {sig.position}
               </p>
 
               {/* Actions */}
-              {deleteId === sig.id ? (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 'var(--spacing-xs)',
-                  padding: 'var(--spacing-sm)',
-                  backgroundColor: 'rgba(246, 70, 93, 0.06)',
-                  borderRadius: 'var(--rounded-md)',
-                }}>
-                  <span style={{ fontSize: '13px', color: 'var(--trading-down)', flex: 1 }}>ยืนยันการลบ?</span>
-                  <button
-                    onClick={() => handleDelete(sig.id)}
-                    style={{
-                      padding: '4px 12px',
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      color: 'white',
-                      backgroundColor: 'var(--trading-down)',
-                      border: 'none',
-                      borderRadius: 'var(--rounded-sm)',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-family)',
-                    }}
-                  >
-                    ลบ
-                  </button>
-                  <button
-                    onClick={() => setDeleteId(null)}
-                    style={{
-                      padding: '4px 12px',
-                      fontSize: '13px',
-                      color: 'var(--muted)',
-                      backgroundColor: 'transparent',
-                      border: '1px solid var(--hairline-on-light)',
-                      borderRadius: 'var(--rounded-sm)',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-family)',
-                    }}
-                  >
-                    ยกเลิก
-                  </button>
-                </div>
-              ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-xs)' }}>
                   {!isDefault && (
                     <button
@@ -263,7 +265,7 @@ export default function Signatories() {
                         fontSize: '12px',
                         fontWeight: 600,
                         color: 'var(--primary)',
-                        backgroundColor: 'rgba(0, 102, 255, 0.06)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
                         border: 'none',
                         borderRadius: 'var(--rounded-md)',
                         cursor: 'pointer',
@@ -271,8 +273,8 @@ export default function Signatories() {
                         transition: 'background-color 0.15s',
                         marginBottom: '4px'
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 102, 255, 0.1)'}
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 102, 255, 0.06)'}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.15)'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'}
                     >
                       ★ ตั้งเป็นค่าเริ่มต้น
                     </button>
@@ -285,21 +287,21 @@ export default function Signatories() {
                         padding: '6px',
                         fontSize: '13px',
                         fontWeight: 500,
-                        color: 'var(--ink)',
+                        color: 'var(--theme-ink)',
                         backgroundColor: 'transparent',
-                        border: '1px solid var(--hairline-on-light)',
+                        border: '1px solid var(--theme-border)',
                         borderRadius: 'var(--rounded-md)',
                         cursor: 'pointer',
                         fontFamily: 'var(--font-family)',
                         transition: 'background-color 0.15s',
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-strong-light)'}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'}
                       onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       แก้ไข
                     </button>
                     <button
-                      onClick={() => setDeleteId(sig.id)}
+                      onClick={() => handleDelete(sig.id)}
                       style={{
                         flex: 1,
                         padding: '6px',
@@ -307,7 +309,7 @@ export default function Signatories() {
                         fontWeight: 500,
                         color: 'var(--trading-down)',
                         backgroundColor: 'transparent',
-                        border: '1px solid var(--hairline-on-light)',
+                        border: '1px solid var(--theme-border)',
                         borderRadius: 'var(--rounded-md)',
                         cursor: 'pointer',
                         fontFamily: 'var(--font-family)',
@@ -320,7 +322,6 @@ export default function Signatories() {
                     </button>
                   </div>
                 </div>
-              )}
             </div>
             );
           })}

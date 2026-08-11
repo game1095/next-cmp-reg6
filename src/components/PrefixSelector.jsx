@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, TABLES } from '../lib/supabase';
 
+let cachedPrefixes = null;
+let fetchPromise = null;
+
 export default function PrefixSelector({ value, onChange, compact = false }) {
-  const [prefixes, setPrefixes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [prefixes, setPrefixes] = useState(cachedPrefixes || []);
+  const [loading, setLoading] = useState(!cachedPrefixes);
 
   useEffect(() => {
-    fetchPrefixes();
+    if (cachedPrefixes) return;
+
+    const loadData = async () => {
+      if (!fetchPromise) {
+        fetchPromise = supabase
+          .from(TABLES.TITLE_PREFIXES)
+          .select('*')
+          .order('prefix_text');
+      }
+      
+      const { data, error } = await fetchPromise;
+      if (!error && data) {
+        cachedPrefixes = data;
+        setPrefixes(data);
+      }
+      setLoading(false);
+    };
+
+    loadData();
   }, []);
-
-  const fetchPrefixes = async () => {
-    const { data, error } = await supabase
-      .from(TABLES.TITLE_PREFIXES)
-      .select('*')
-      .order('prefix_text');
-
-    if (!error && data) {
-      setPrefixes(data);
-    }
-    setLoading(false);
-  };
 
   const selectStyle = {
     backgroundColor: 'var(--canvas-light)',

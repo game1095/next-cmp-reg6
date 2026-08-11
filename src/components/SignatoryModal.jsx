@@ -153,25 +153,42 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
 
         {/* Signature Image Upload */}
         <div style={{ marginBottom: 'var(--spacing-md)' }}>
-          <label style={{ fontSize: '14px', fontWeight: 500, color: 'var(--ink)', display: 'block', marginBottom: '8px' }}>
+          <label style={{ fontSize: '14px', fontWeight: 500, color: 'var(--theme-ink)', display: 'block', marginBottom: '8px' }}>
             ภาพลายเซ็น
           </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{
-              fontSize: '13px',
-              fontFamily: 'var(--font-family)',
+          <div style={{ position: 'relative' }}>
+            <input
+              type="file"
+              id="signature-upload"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{
+                position: 'absolute', width: '100%', height: '100%', opacity: 0, cursor: 'pointer', zIndex: 10, top: 0, left: 0
+              }}
+            />
+            <div style={{
+              border: '2px dashed var(--theme-border)',
+              borderRadius: 'var(--rounded-lg)',
+              padding: 'var(--spacing-lg)',
+              textAlign: 'center',
+              backgroundColor: 'var(--theme-canvas)',
+              transition: 'all 0.2s',
             }}
-          />
+            onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.04)'; }}
+            onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--theme-border)'; e.currentTarget.style.backgroundColor = 'var(--theme-canvas)'; }}
+            >
+              <div style={{ fontSize: '28px', marginBottom: '8px' }}>🖼️</div>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--primary)' }}>คลิกเพื่ออัปโหลดลายเซ็น</div>
+              <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>PNG หรือ JPG (แนะนำพื้นหลังโปร่งใส)</div>
+            </div>
+          </div>
           {previewUrl && (
             <div style={{
               marginTop: 'var(--spacing-sm)',
               padding: 'var(--spacing-md)',
-              border: '1px solid var(--hairline-on-light)',
+              border: '1px solid var(--theme-border)',
               borderRadius: 'var(--rounded-lg)',
-              backgroundColor: 'var(--surface-soft-light)',
+              backgroundColor: 'var(--theme-surface-strong)',
               textAlign: 'center',
             }}>
               <img
@@ -190,9 +207,9 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
             id="sig-default"
             checked={isDefault}
             onChange={(e) => setIsDefault(e.target.checked)}
-            style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+            style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--primary)' }}
           />
-          <label htmlFor="sig-default" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--ink)', cursor: 'pointer' }}>
+          <label htmlFor="sig-default" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--theme-ink)', cursor: 'pointer' }}>
             ตั้งเป็นผู้ลงนามเริ่มต้น (Default)
           </label>
         </div>
@@ -203,15 +220,18 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
             onClick={onClose}
             style={{
               background: 'none',
-              border: '1px solid var(--hairline-on-light)',
+              border: '1px solid var(--theme-border)',
               borderRadius: 'var(--rounded-md)',
               padding: '10px 20px',
               fontSize: '14px',
               fontWeight: 500,
-              color: 'var(--ink)',
+              color: 'var(--theme-ink)',
               cursor: 'pointer',
               fontFamily: 'var(--font-family)',
+              transition: 'background-color 0.15s'
             }}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             ยกเลิก
           </button>

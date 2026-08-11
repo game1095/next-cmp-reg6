@@ -65,8 +65,27 @@ export default function HowToGuide() {
       maxWidth: '800px',
       margin: '0 auto'
     }}>
-      <div style={{ textAlign: 'center', marginBottom: 'var(--spacing-xl)' }}>
-        <h2 className="text-display-sm" style={{ marginBottom: '8px' }}>วิธีการออกจดหมาย</h2>
+      <style>{`
+        @keyframes staggerFadeUp {
+          from { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes lineGrow {
+          from { height: 0; opacity: 0; }
+          to { height: var(--spacing-md); opacity: 1; }
+        }
+        .animate-item {
+          opacity: 0;
+          animation: staggerFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-line {
+          opacity: 0;
+          animation: lineGrow 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
+
+      <div className="animate-item" style={{ textAlign: 'center', marginBottom: 'var(--spacing-xl)', animationDelay: '0.1s' }}>
+        <h2 className="text-display-sm" style={{ marginBottom: '8px', color: 'var(--theme-ink)' }}>วิธีการออกจดหมาย</h2>
         <p className="text-body-md text-muted">
           เรียนรู้ขั้นตอนการจัดเตรียมและพิมพ์เอกสารอย่างถูกต้องใน 4 ขั้นตอนง่ายๆ
         </p>
@@ -74,23 +93,36 @@ export default function HowToGuide() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
         {steps.map((step, index) => (
-          <div key={step.id} style={{
+          <div key={step.id} className="animate-item" style={{
             display: 'flex',
             alignItems: 'flex-start',
             gap: 'var(--spacing-lg)',
             padding: 'var(--spacing-lg)',
-            backgroundColor: 'var(--canvas-light)',
-            border: '1px solid var(--hairline-on-light)',
+            backgroundColor: 'var(--theme-canvas)',
+            border: '1px solid var(--theme-border)',
             borderRadius: 'var(--rounded-xl)',
             position: 'relative',
-            overflow: 'hidden'
-          }}>
+            overflow: 'visible',
+            transition: 'transform 0.2s, box-shadow 0.2s',
+            animationDelay: `${0.1 + (index + 1) * 0.1}s`
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.06)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+          >
             {/* Background Accent */}
             <div style={{
               position: 'absolute',
               top: 0, left: 0, bottom: 0,
               width: '4px',
-              backgroundColor: step.color
+              backgroundColor: step.color,
+              borderTopLeftRadius: 'var(--rounded-xl)',
+              borderBottomLeftRadius: 'var(--rounded-xl)',
             }} />
             
             {/* Icon */}
@@ -103,13 +135,14 @@ export default function HowToGuide() {
               color: step.color,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              zIndex: 1
             }}>
               {step.icon}
             </div>
 
             {/* Content */}
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, color: 'var(--theme-ink)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                 <span style={{
                   display: 'inline-flex',
@@ -125,7 +158,7 @@ export default function HowToGuide() {
                 }}>
                   {step.id}
                 </span>
-                <h3 className="text-title-md">{step.title}</h3>
+                <h3 className="text-title-md" style={{ color: 'var(--theme-ink)' }}>{step.title}</h3>
               </div>
               <p className="text-body-md text-muted" style={{ lineHeight: 1.6 }}>
                 {step.description}
@@ -134,21 +167,23 @@ export default function HowToGuide() {
             
             {/* Connection Line (except last) */}
             {index < steps.length - 1 && (
-              <div style={{
+              <div className="animate-line" style={{
                 position: 'absolute',
-                left: '52px',
-                bottom: '-24px',
+                left: 'calc(var(--spacing-lg) + 32px)',
+                bottom: 'calc(var(--spacing-md) * -1)',
                 width: '2px',
-                height: '24px',
-                backgroundColor: 'var(--hairline-on-light)',
-                zIndex: -1
+                height: 'var(--spacing-md)',
+                backgroundColor: 'var(--theme-border)',
+                transform: 'translateX(-50%)',
+                zIndex: 0,
+                animationDelay: `${0.3 + (index + 1) * 0.1}s`
               }} />
             )}
           </div>
         ))}
       </div>
       
-      <div style={{
+      <div className="animate-item" style={{
         marginTop: 'var(--spacing-xl)',
         padding: 'var(--spacing-lg)',
         backgroundColor: 'rgba(59, 130, 246, 0.05)',
@@ -156,7 +191,8 @@ export default function HowToGuide() {
         border: '1px dashed rgba(59, 130, 246, 0.3)',
         display: 'flex',
         alignItems: 'center',
-        gap: 'var(--spacing-md)'
+        gap: 'var(--spacing-md)',
+        animationDelay: `${0.1 + (steps.length + 1) * 0.1}s`
       }}>
         <div style={{ fontSize: '24px' }}>💡</div>
         <div>
