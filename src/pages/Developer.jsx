@@ -63,7 +63,7 @@ const TiltCard = ({ children, delay = 0, style }) => {
           border: "1px solid var(--theme-border)",
           overflow: "hidden",
           boxShadow: isHovered
-            ? "0 20px 40px rgba(0,0,0,0.1), 0 0 20px rgba(59,130,246,0.1)"
+            ? "0 20px 40px rgba(0,0,0,0.1), 0 0 20px rgba(252, 213, 53, 0.1)"
             : "0 4px 12px rgba(0,0,0,0.02)",
         }}
       >
@@ -111,11 +111,11 @@ export default function Developer() {
         title: "⚠️ คำเตือนระบบรวน!",
         text: "หัวหน้าครับ พ่อผมบอกว่ามันทำงานมั่ว อย่าไปเชื่อมันนะครับ!!!",
         icon: "warning",
-        confirmButtonColor: "var(--trading-down)",
+        confirmButtonColor: "var(--primary)",
         confirmButtonText: "พ่อมึงเซ็นงานกู พ่อมึงก็มั่ว :P",
         background: "var(--theme-canvas)",
         color: "var(--theme-ink)",
-        backdrop: `rgba(246, 70, 93, 0.4)`,
+        backdrop: `rgba(0, 0, 0, 0.8)`,
       }).then(() => {
         document.body.classList.remove("crazy-shake");
       });
@@ -149,14 +149,9 @@ export default function Developer() {
           100% { transform: translateY(0px) rotate(0deg); filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
         }
         @keyframes glowPulse {
-          0% { box-shadow: 0 0 20px rgba(59,130,246,0.3), inset 0 0 10px rgba(59,130,246,0.2); }
-          50% { box-shadow: 0 0 50px rgba(139,92,246,0.5), inset 0 0 20px rgba(139,92,246,0.3); }
-          100% { box-shadow: 0 0 20px rgba(59,130,246,0.3), inset 0 0 10px rgba(59,130,246,0.2); }
-        }
-        @keyframes gradientMove {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% { box-shadow: 0 0 20px rgba(252,213,53,0.3), inset 0 0 10px rgba(252,213,53,0.2); }
+          50% { box-shadow: 0 0 40px rgba(252,213,53,0.5), inset 0 0 20px rgba(252,213,53,0.3); }
+          100% { box-shadow: 0 0 20px rgba(252,213,53,0.3), inset 0 0 10px rgba(252,213,53,0.2); }
         }
         @keyframes spinSlow {
           from { transform: rotate(0deg); }
@@ -187,14 +182,7 @@ export default function Developer() {
           -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
         }
         .gradient-text {
-          background: linear-gradient(135deg, var(--primary) 0%, var(--accent-purple, #8b5cf6) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          color: transparent;
-        }
-        .gradient-text-2 {
-          background: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+          background: linear-gradient(135deg, var(--primary) 0%, #b45309 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -216,7 +204,7 @@ export default function Developer() {
         }}
       />
 
-      {/* Spectacular Animated Orbs */}
+      {/* Spectacular Animated Orbs (Now Yellow/Gold/Gray themed) */}
       <div
         style={{
           position: "absolute",
@@ -225,7 +213,7 @@ export default function Developer() {
           width: "400px",
           height: "400px",
           background:
-            "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(252,213,53,0.08) 0%, transparent 70%)",
           zIndex: -1,
           pointerEvents: "none",
           filter: "blur(40px)",
@@ -240,7 +228,7 @@ export default function Developer() {
           width: "500px",
           height: "500px",
           background:
-            "radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(150,150,150,0.05) 0%, transparent 70%)",
           zIndex: -1,
           pointerEvents: "none",
           filter: "blur(50px)",
@@ -254,7 +242,7 @@ export default function Developer() {
           border: "1px solid var(--theme-border)",
           borderRadius: "24px",
           padding: "48px 40px",
-          maxWidth: "800px",
+          maxWidth: "1100px",
           width: "100%",
           boxShadow: "0 24px 60px rgba(0,0,0,0.05)",
           textAlign: "center",
@@ -262,7 +250,7 @@ export default function Developer() {
           animation: `slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both`,
         }}
       >
-        {/* Animated Gradient Border Top */}
+        {/* Animated Gradient Border Top (Now Yellow) */}
         <div
           style={{
             position: "absolute",
@@ -271,7 +259,7 @@ export default function Developer() {
             right: 0,
             height: "4px",
             background:
-              "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%)",
+              "linear-gradient(90deg, #FCD535 0%, #F59E0B 50%, #FCD535 100%)",
             backgroundSize: "200% 100%",
             animation: "glowPulse 3s infinite",
             borderTopLeftRadius: "24px",
@@ -289,15 +277,18 @@ export default function Developer() {
               height: "80px",
               borderRadius: "24px",
               background:
-                "linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(139,92,246,0.2) 100%)",
+                "linear-gradient(135deg, rgba(252,213,53,0.15) 0%, rgba(252,213,53,0.05) 100%)",
               color: "var(--primary)",
               marginBottom: "24px",
-              fontSize: "36px",
-              boxShadow: "0 8px 32px rgba(59,130,246,0.2)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              boxShadow: "0 8px 32px rgba(252,213,53,0.15)",
+              border: "1px solid rgba(252,213,53,0.2)",
             }}
           >
-            👨‍💻
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
           </div>
           <h1
             className="text-display-sm"
@@ -354,7 +345,7 @@ export default function Developer() {
                   width: "180px",
                   height: "180px",
                   background:
-                    "conic-gradient(from 0deg, transparent 0%, rgba(245, 158, 11, 0.2) 25%, transparent 50%)",
+                    "conic-gradient(from 0deg, transparent 0%, rgba(252, 213, 53, 0.15) 25%, transparent 50%)",
                   borderRadius: "50%",
                   animation: "spinSlow 10s linear infinite",
                   zIndex: -1,
@@ -380,7 +371,7 @@ export default function Developer() {
                     maxWidth: "100%",
                     maxHeight: "100%",
                     objectFit: "contain",
-                    filter: "drop-shadow(0 15px 15px rgba(245, 158, 11, 0.2))",
+                    filter: "drop-shadow(0 15px 15px rgba(252, 213, 53, 0.15))",
                   }}
                 />
               </div>
@@ -388,13 +379,13 @@ export default function Developer() {
                 <div
                   style={{
                     fontSize: "12px",
-                    color: "#d97706",
+                    color: "var(--primary)",
                     fontWeight: 800,
                     textTransform: "uppercase",
                     letterSpacing: "1.5px",
                     marginBottom: "16px",
-                    backgroundColor: "rgba(245, 158, 11, 0.15)",
-                    border: "1px solid rgba(245, 158, 11, 0.2)",
+                    backgroundColor: "rgba(252, 213, 53, 0.1)",
+                    border: "1px solid rgba(252, 213, 53, 0.2)",
                     padding: "8px 20px",
                     borderRadius: "100px",
                     display: "inline-block",
@@ -403,10 +394,10 @@ export default function Developer() {
                   Visionary Concept
                 </div>
                 <div
-                  className="gradient-text-2"
                   style={{
                     fontSize: "36px",
                     fontWeight: 900,
+                    color: "var(--theme-ink)"
                   }}
                 >
                   ฮ.ฮูก
@@ -439,7 +430,7 @@ export default function Developer() {
                   width: "180px",
                   height: "180px",
                   background:
-                    "conic-gradient(from 0deg, transparent 0%, rgba(139, 92, 246, 0.2) 25%, transparent 50%)",
+                    "conic-gradient(from 0deg, transparent 0%, rgba(200, 200, 200, 0.15) 25%, transparent 50%)",
                   borderRadius: "50%",
                   animation: "spinSlow 8s linear infinite reverse",
                   zIndex: -1,
@@ -465,7 +456,7 @@ export default function Developer() {
                     maxWidth: "100%",
                     maxHeight: "100%",
                     objectFit: "contain",
-                    filter: "drop-shadow(0 15px 15px rgba(139, 92, 246, 0.2))",
+                    filter: "drop-shadow(0 15px 15px rgba(255, 255, 255, 0.05))",
                   }}
                 />
               </div>
@@ -473,19 +464,19 @@ export default function Developer() {
                 <div
                   style={{
                     fontSize: "12px",
-                    color: "var(--accent-purple, #8b5cf6)",
+                    color: "var(--theme-ink)",
                     fontWeight: 800,
                     textTransform: "uppercase",
                     letterSpacing: "1.5px",
                     marginBottom: "16px",
-                    backgroundColor: "rgba(139,92,246,0.15)",
-                    border: "1px solid rgba(139,92,246,0.2)",
+                    backgroundColor: "var(--theme-surface-strong)",
+                    border: "1px solid var(--theme-border)",
                     padding: "8px 20px",
                     borderRadius: "100px",
                     display: "inline-block",
                   }}
                 >
-                  Code & Design
+                  Better by Design
                 </div>
                 <div
                   className="gradient-text"
@@ -512,7 +503,141 @@ export default function Developer() {
                       : "คลิกดูสิ มีความลับซ่อนอยู่"
                   }
                 >
-                  คนทำงานมั่ว
+                  คนทำงานดวด
+                </div>
+              </div>
+            </div>
+          </TiltCard>
+
+          {/* Support The Developer */}
+          <TiltCard delay={0.6}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: "48px 32px",
+                height: "100%",
+                backgroundColor: "var(--theme-surface-strong)",
+                background:
+                  "linear-gradient(180deg, var(--theme-canvas) 0%, var(--theme-surface-strong) 100%)",
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
+              {/* Spinning background halo */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "20px",
+                  width: "180px",
+                  height: "180px",
+                  background:
+                    "conic-gradient(from 0deg, transparent 0%, rgba(252, 213, 53, 0.1) 25%, transparent 50%)",
+                  borderRadius: "50%",
+                  animation: "spinSlow 12s linear infinite",
+                  zIndex: -1,
+                  filter: "blur(20px)",
+                }}
+              />
+
+              <div
+                style={{
+                  width: "210px",
+                  height: "210px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "36px",
+                  borderRadius: "20px",
+                  background: "#ffffff",
+                  boxShadow:
+                    "0 16px 32px rgba(252, 213, 53, 0.05), 0 0 0 1px rgba(252, 213, 53, 0.1)",
+                  overflow: "hidden",
+                  position: "relative",
+                  padding: "8px",
+                  animation: "floatAnim 6s ease-in-out infinite 0.5s",
+                }}
+              >
+                {/* Image Placeholder */}
+                <img
+                  src="/images/support-qr.png"
+                  alt="QR Code สำหรับสนับสนุน"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    display: "block",
+                    borderRadius: "12px",
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    e.currentTarget.nextSibling.style.display = "flex";
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "none",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "rgba(252, 213, 53, 0.02)",
+                    color: "rgba(252, 213, 53, 0.5)",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    textAlign: "center",
+                    padding: "16px",
+                  }}
+                >
+                  <span style={{ marginBottom: "8px" }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  </span>
+                  <span>วางรูป QR Code ที่นี่</span>
+                </div>
+              </div>
+
+              <div style={{ textAlign: "center", marginTop: "auto" }}>
+                <div
+                  style={{
+                    fontSize: "12px",
+                    color: "var(--theme-ink)",
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    letterSpacing: "1.5px",
+                    marginBottom: "16px",
+                    backgroundColor: "var(--theme-surface-strong)",
+                    border: "1px solid var(--theme-border)",
+                    padding: "8px 20px",
+                    borderRadius: "100px",
+                    display: "inline-block",
+                  }}
+                >
+                  Support Us
+                </div>
+                <div
+                  style={{
+                    fontSize: "30px",
+                    fontWeight: 900,
+                    marginBottom: "12px",
+                    color: "var(--theme-ink)"
+                  }}
+                >
+                  สนับสนุนผู้พัฒนา
+                </div>
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--muted)",
+                    lineHeight: 1.6,
+                    fontWeight: 500,
+                    maxWidth: "220px",
+                    margin: "0 auto",
+                  }}
+                >
+                  หากประทับใจและช่วยการปฏิบัติงานของท่าน
+                  ร่วมสนับสนุนค่าอาหารกลางวัน โดยสแกน QR Code
                 </div>
               </div>
             </div>

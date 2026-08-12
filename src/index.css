@@ -1,5 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+@font-face {
+  font-family: 'TH Sarabun PSK';
+  font-style: normal;
+  font-weight: normal;
+  src: local('TH Sarabun PSK'), local('THSarabunPSK'), 
+       url('https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TH Sarabun PSK';
+  font-style: normal;
+  font-weight: bold;
+  src: local('TH Sarabun PSK Bold'), local('THSarabunPSK-Bold'), 
+       url('https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew_bold-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TH Sarabun PSK';
+  font-style: italic;
+  font-weight: normal;
+  src: local('TH Sarabun PSK Italic'), local('THSarabunPSK-Italic'), 
+       url('https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew_italic-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TH Sarabun PSK';
+  font-style: italic;
+  font-weight: bold;
+  src: local('TH Sarabun PSK Bold Italic'), local('THSarabunPSK-BoldItalic'), 
+       url('https://cdn.jsdelivr.net/npm/font-th-sarabun-new@1.0.0/fonts/THSarabunNew_bolditalic-webfont.woff') format('woff');
+}
 
 :root {
   /* Colors — Brand & Accent */
@@ -57,7 +89,7 @@
   --rounded-pill: 9999px;
 
   /* Typography Base */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family: 'Kanit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Theme Mapping (Light Default) */
   --theme-canvas: var(--canvas-light);
@@ -204,17 +236,17 @@ a {
 
 .print-letter-head {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 5px; 
   align-items: flex-start;
 }
 
 .print-ref {
-  width: 45%;
+  width: 50%;
 }
 
 .print-sender {
   width: 50%;
+  padding-left: 12%;
 }
 
 .print-date {
@@ -274,7 +306,6 @@ a {
 }
 
 .print-signature-block {
-  text-align: center;
   margin-left: 50%; 
   margin-top: 20px;
   page-break-inside: avoid;
@@ -289,7 +320,7 @@ a {
   height: 50px; 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 4px;
 }
 
@@ -299,8 +330,22 @@ a {
   object-fit: contain;
 }
 
+.print-signature-name-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
 .print-signature-name {
   margin-bottom: 2px;
+}
+
+.print-signature-position {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .print-footer {
@@ -312,6 +357,12 @@ a {
 @media print {
   @page {
     margin: 0; 
+  }
+
+  html, body, #root, .app-layout, .app-main {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
   }
 
   body {
@@ -335,7 +386,39 @@ a {
     overflow: visible !important;
     height: auto !important;
     width: auto !important;
+    position: static !important;
   }
+}
+
+/* ── PDF Generation overrides (mirrors print styles) ── */
+html, body.pdf-generating, 
+body.pdf-generating #root, 
+body.pdf-generating .app-layout, 
+body.pdf-generating .app-main {
+  background: white !important;
+  height: auto !important;
+  min-height: auto !important;
+  overflow: visible !important;
+  margin: 0; 
+  padding: 0;
+}
+
+body.pdf-generating .no-print {
+  display: none !important;
+}
+
+body.pdf-generating .print-area {
+  display: block !important;
+  opacity: 1 !important;
+  position: static !important;
+  z-index: 1 !important;
+}
+
+body.pdf-generating .print-wrapper {
+  overflow: visible !important;
+  height: auto !important;
+  width: auto !important;
+  position: static !important;
 }
 
 /* ── Skeleton Loading ── */
