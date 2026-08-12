@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { supabase, TABLES } from '../lib/supabase';
-import Modal from './Modal';
-import Button from './Button';
-import Input from './Input';
+import React, { useState, useEffect } from "react";
+import { supabase, TABLES } from "../lib/supabase";
+import Modal from "./Modal";
+import Button from "./Button";
+import Input from "./Input";
 
-export default function SignatoryModal({ isOpen, onClose, onSaved, editData = null }) {
-  const [name, setName] = useState('');
-  const [position, setPosition] = useState('');
+export default function SignatoryModal({
+  isOpen,
+  onClose,
+  onSaved,
+  editData = null,
+}) {
+  const [name, setName] = useState("");
+  const [position, setPosition] = useState("");
   const [signatureFile, setSignatureFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,14 +23,16 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
 
   useEffect(() => {
     if (editData) {
-      setName(editData.name || '');
-      setPosition(editData.position || '');
-      setPreviewUrl(editData.signature_url || '');
-      setIsDefault(localStorage.getItem('default_signatory_id') === editData.id);
+      setName(editData.name || "");
+      setPosition(editData.position || "");
+      setPreviewUrl(editData.signature_url || "");
+      setIsDefault(
+        localStorage.getItem("default_signatory_id") === editData.id,
+      );
     } else {
-      setName('');
-      setPosition('');
-      setPreviewUrl('');
+      setName("");
+      setPosition("");
+      setPreviewUrl("");
       setIsDefault(false);
     }
     setSignatureFile(null);
@@ -41,18 +48,18 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
   };
 
   const uploadSignature = async (file) => {
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = `signatures/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('signatures')
+      .from("signatures")
       .upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
     const { data: urlData } = supabase.storage
-      .from('signatures')
+      .from("signatures")
       .getPublicUrl(filePath);
 
     return urlData.publicUrl;
@@ -75,40 +82,44 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
         const { error: updateError } = await supabase
           .from(TABLES.SIGNATORIES)
           .update({ name, position, signature_url: signatureUrl })
-          .eq('id', editData.id);
+          .eq("id", editData.id);
 
         if (updateError) throw updateError;
-        
+
         if (isDefault) {
-          localStorage.setItem('default_signatory_id', editData.id);
-        } else if (localStorage.getItem('default_signatory_id') === editData.id) {
-          localStorage.removeItem('default_signatory_id');
+          localStorage.setItem("default_signatory_id", editData.id);
+        } else if (
+          localStorage.getItem("default_signatory_id") === editData.id
+        ) {
+          localStorage.removeItem("default_signatory_id");
         }
       } else {
-        const { data: { user } } = await supabase.auth.getUser();
-        
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
         const { data: insertedData, error: insertError } = await supabase
           .from(TABLES.SIGNATORIES)
-          .insert({ 
-            name, 
-            position, 
+          .insert({
+            name,
+            position,
             signature_url: signatureUrl,
-            user_id: user.id
+            user_id: user.id,
           })
-          .select('id')
+          .select("id")
           .single();
 
         if (insertError) throw insertError;
-        
+
         if (isDefault && insertedData) {
-          localStorage.setItem('default_signatory_id', insertedData.id);
+          localStorage.setItem("default_signatory_id", insertedData.id);
         }
       }
 
       onSaved();
       onClose();
     } catch (err) {
-      setError(err.message || 'เกิดข้อผิดพลาด');
+      setError(err.message || "เกิดข้อผิดพลาด");
     } finally {
       setLoading(false);
     }
@@ -118,17 +129,19 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={isEditing ? 'แก้ไขผู้ลงนาม' : 'เพิ่มผู้ลงนาม'}
+      title={isEditing ? "แก้ไขผู้ลงนาม" : "เพิ่มผู้ลงนาม"}
     >
       {error && (
-        <div style={{
-          color: 'var(--trading-down)',
-          backgroundColor: 'rgba(246, 70, 93, 0.1)',
-          padding: '12px',
-          borderRadius: 'var(--rounded-sm)',
-          fontSize: '14px',
-          marginBottom: 'var(--spacing-md)',
-        }}>
+        <div
+          style={{
+            color: "var(--trading-down)",
+            backgroundColor: "rgba(246, 70, 93, 0.1)",
+            padding: "12px",
+            borderRadius: "var(--rounded-sm)",
+            fontSize: "14px",
+            marginBottom: "var(--spacing-md)",
+          }}
+        >
           {error}
         </div>
       )}
@@ -137,7 +150,7 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
         <Input
           id="sig-name"
           label="ชื่อ-นามสกุล"
-          placeholder="เช่น นายเกม เทพมาก"
+          placeholder="นายทดสอบ สวัสดีครับ"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -145,98 +158,237 @@ export default function SignatoryModal({ isOpen, onClose, onSaved, editData = nu
         <Input
           id="sig-position"
           label="ตำแหน่ง"
-          placeholder="เช่น หัวหน้าที่ทำการไปรษณีย์จังหวัดสุโขทัย"
+          placeholder="หัวหน้าที่ทำการไปรษณีย์จังหวัดทดสอบ / หัวหน้าไปรษณีย์ทดสอบ"
           value={position}
           onChange={(e) => setPosition(e.target.value)}
           required
         />
 
         {/* Signature Image Upload */}
-        <div style={{ marginBottom: 'var(--spacing-md)' }}>
-          <label style={{ fontSize: '14px', fontWeight: 500, color: 'var(--theme-ink)', display: 'block', marginBottom: '8px' }}>
+        <div style={{ marginBottom: "var(--spacing-md)" }}>
+          <label
+            style={{
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "var(--theme-ink)",
+              display: "block",
+              marginBottom: "8px",
+            }}
+          >
             ภาพลายเซ็น
           </label>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: "relative" }}>
             <input
               type="file"
               id="signature-upload"
               accept="image/*"
               onChange={handleFileChange}
               style={{
-                position: 'absolute', width: '100%', height: '100%', opacity: 0, cursor: 'pointer', zIndex: 10, top: 0, left: 0
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                opacity: 0,
+                cursor: "pointer",
+                zIndex: 10,
+                top: 0,
+                left: 0,
               }}
             />
-            <div style={{
-              border: '2px dashed var(--theme-border)',
-              borderRadius: 'var(--rounded-lg)',
-              padding: 'var(--spacing-lg)',
-              textAlign: 'center',
-              backgroundColor: 'var(--theme-canvas)',
-              transition: 'all 0.2s',
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.04)'; }}
-            onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--theme-border)'; e.currentTarget.style.backgroundColor = 'var(--theme-canvas)'; }}
+            <div
+              style={{
+                border: "2px dashed var(--theme-border)",
+                borderRadius: "var(--rounded-lg)",
+                padding: "32px 24px",
+                textAlign: "center",
+                backgroundColor: "var(--theme-canvas)",
+                transition: "all 0.2s ease",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.borderColor = "var(--primary)";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(252, 213, 53, 0.05)";
+                e.currentTarget.style.color = "var(--primary)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.borderColor = "var(--theme-border)";
+                e.currentTarget.style.backgroundColor = "var(--theme-canvas)";
+                e.currentTarget.style.color = "var(--muted)";
+              }}
             >
-              <div style={{ fontSize: '28px', marginBottom: '8px' }}>🖼️</div>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--primary)' }}>คลิกเพื่ออัปโหลดลายเซ็น</div>
-              <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '4px' }}>PNG หรือ JPG (แนะนำพื้นหลังโปร่งใส)</div>
+              <div style={{ color: "inherit", transition: "color 0.2s ease" }}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <div
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "var(--theme-ink)",
+                }}
+              >
+                คลิกเพื่ออัปโหลดลายเซ็น
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--muted)" }}>
+                PNG หรือ JPG (แนะนำพื้นหลังโปร่งใส)
+              </div>
             </div>
           </div>
           {previewUrl && (
-            <div style={{
-              marginTop: 'var(--spacing-sm)',
-              padding: 'var(--spacing-md)',
-              border: '1px solid var(--theme-border)',
-              borderRadius: 'var(--rounded-lg)',
-              backgroundColor: 'var(--theme-surface-strong)',
-              textAlign: 'center',
-            }}>
+            <div
+              style={{
+                marginTop: "var(--spacing-sm)",
+                padding: "var(--spacing-md)",
+                border: "1px solid var(--theme-border)",
+                borderRadius: "var(--rounded-lg)",
+                backgroundColor: "var(--theme-surface-strong)",
+                textAlign: "center",
+              }}
+            >
               <img
                 src={previewUrl}
                 alt="ตัวอย่างลายเซ็น"
-                style={{ maxWidth: '200px', maxHeight: '100px', objectFit: 'contain' }}
+                style={{
+                  maxWidth: "200px",
+                  maxHeight: "100px",
+                  objectFit: "contain",
+                }}
               />
             </div>
           )}
         </div>
 
         {/* Set as Default Checkbox */}
-        <div style={{ marginBottom: 'var(--spacing-lg)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <input
-            type="checkbox"
-            id="sig-default"
-            checked={isDefault}
-            onChange={(e) => setIsDefault(e.target.checked)}
-            style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--primary)' }}
-          />
-          <label htmlFor="sig-default" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--theme-ink)', cursor: 'pointer' }}>
-            ตั้งเป็นผู้ลงนามเริ่มต้น (Default)
+        <div style={{ marginBottom: "var(--spacing-lg)" }}>
+          <label
+            htmlFor="sig-default"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              cursor: "pointer",
+              padding: "12px 16px",
+              borderRadius: "var(--rounded-md)",
+              border: "1px solid var(--theme-border)",
+              backgroundColor: isDefault
+                ? "rgba(252, 213, 53, 0.05)"
+                : "var(--theme-canvas)",
+              transition: "all 0.2s ease",
+              borderColor: isDefault ? "var(--primary)" : "var(--theme-border)",
+            }}
+            onMouseOver={(e) => {
+              if (!isDefault)
+                e.currentTarget.style.backgroundColor =
+                  "var(--theme-surface-strong)";
+            }}
+            onMouseOut={(e) => {
+              if (!isDefault)
+                e.currentTarget.style.backgroundColor = "var(--theme-canvas)";
+            }}
+          >
+            <div
+              style={{
+                width: "20px",
+                height: "20px",
+                borderRadius: "4px",
+                border: isDefault ? "none" : "2px solid var(--muted)",
+                backgroundColor: isDefault ? "var(--primary)" : "transparent",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {isDefault && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--on-primary)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              )}
+            </div>
+            <input
+              type="checkbox"
+              id="sig-default"
+              checked={isDefault}
+              onChange={(e) => setIsDefault(e.target.checked)}
+              style={{ display: "none" }}
+            />
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 600,
+                color: "var(--theme-ink)",
+              }}
+            >
+              ตั้งเป็นผู้ลงนามเริ่มต้น (Default)
+            </span>
           </label>
         </div>
 
-        <div style={{ display: 'flex', gap: 'var(--spacing-sm)', justifyContent: 'flex-end', marginTop: 'var(--spacing-lg)' }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "var(--spacing-sm)",
+            justifyContent: "flex-end",
+            marginTop: "var(--spacing-lg)",
+          }}
+        >
           <button
             type="button"
             onClick={onClose}
             style={{
-              background: 'none',
-              border: '1px solid var(--theme-border)',
-              borderRadius: 'var(--rounded-md)',
-              padding: '10px 20px',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: 'var(--theme-ink)',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-family)',
-              transition: 'background-color 0.15s'
+              background: "transparent",
+              border: "1px solid var(--theme-border)",
+              borderRadius: "var(--rounded-md)",
+              padding: "10px 20px",
+              height: "40px",
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "var(--theme-ink)",
+              cursor: "pointer",
+              fontFamily: "var(--font-family)",
+              transition: "all 0.15s ease",
             }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor =
+                "var(--theme-surface-strong)";
+              e.currentTarget.style.borderColor = "var(--muted)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.borderColor = "var(--theme-border)";
+            }}
           >
             ยกเลิก
           </button>
           <Button type="submit" disabled={loading}>
-            {loading ? 'กำลังบันทึก...' : (isEditing ? 'อัปเดต' : 'บันทึก')}
+            {loading ? "กำลังบันทึก..." : isEditing ? "อัปเดต" : "บันทึก"}
           </Button>
         </div>
       </form>

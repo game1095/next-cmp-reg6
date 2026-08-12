@@ -4,6 +4,7 @@ import { flushSync } from 'react-dom';
 import html2pdf from 'html2pdf.js';
 import Button from '../components/Button';
 import PrefixSelector from '../components/PrefixSelector';
+import PremiumSelect from '../components/PremiumSelect';
 import SignatoryPicker from '../components/SignatoryPicker';
 import PrintPreview from '../components/PrintPreview';
 import { Toast } from '../lib/toast';
@@ -12,6 +13,21 @@ import { Toast } from '../lib/toast';
 const getInitials = (name) => {
   if (!name) return '?';
   return name.trim().charAt(0);
+};
+
+// Wait for images in print area to fully load
+const waitForImagesToLoad = async () => {
+  const images = Array.from(document.querySelectorAll('.print-area img'));
+  const promises = images.map((img) => {
+    if (img.complete) return Promise.resolve();
+    return new Promise((resolve) => {
+      img.onload = resolve;
+      img.onerror = resolve; // resolve anyway to avoid hanging
+    });
+  });
+  await Promise.all(promises);
+  // Give a short tick for the browser to paint
+  await new Promise((r) => setTimeout(r, 100));
 };
 
 // Utility to get a consistent random color based on string
@@ -174,7 +190,10 @@ export default function Customers({ session }) {
       }));
 
     const signatory = signatories.find((s) => s.id === selectedSignatoryId) || null;
-    setPrintData({ customers: selectedCustomers, signatory });
+    
+    flushSync(() => {
+      setPrintData({ customers: selectedCustomers, signatory });
+    });
 
     // Mark as printed in Supabase
     try {
@@ -187,13 +206,14 @@ export default function Customers({ session }) {
       console.warn("Could not update print status, column might be missing.", e);
     }
 
-    // Give React a tick to render the PrintPreview, then print
-    setTimeout(() => window.print(), 200);
+    await waitForImagesToLoad();
+    window.print();
   };
 
   const handleSavePDFs = async () => {
     if (!hasSelection) return;
     setIsGeneratingPDFs(true);
+    document.body.classList.add('pdf-generating');
 
     try {
       const signatory = signatories.find((s) => s.id === selectedSignatoryId) || null;
@@ -216,8 +236,8 @@ export default function Customers({ session }) {
           setPrintData({ customers: [customer], signatory });
         });
 
-        // Small delay to ensure images/fonts are rendered
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Wait for images/fonts to be fully loaded
+        await waitForImagesToLoad();
 
         const element = document.querySelector('.print-area');
         if (element) {
@@ -256,6 +276,7 @@ export default function Customers({ session }) {
         title: 'เกิดข้อผิดพลาดในการสร้าง PDF'
       });
     } finally {
+      document.body.classList.remove('pdf-generating');
       setIsGeneratingPDFs(false);
       // Reset print data or prepare for next action
       setPrintData(null);
@@ -293,11 +314,10 @@ export default function Customers({ session }) {
               <span style={{ 
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 width: '44px', height: '44px', borderRadius: 'var(--rounded-lg)',
-                backgroundColor: 'var(--primary)', // Binance Yellow
-                color: 'var(--on-primary)', // Black on yellow
-                fontSize: '22px',
+                backgroundColor: 'var(--primary)',
+                color: 'var(--on-primary)',
               }}>
-                <span style={{ WebkitTextFillColor: 'initial' }}>👥</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
               </span>
               ข้อมูลลูกค้า
             </h1>
@@ -339,11 +359,13 @@ export default function Customers({ session }) {
         {/* ── Search Bar & Controls ── */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-md)' }}>
           <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-            <span style={{
+            <div style={{
               position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)',
-              color: 'var(--muted)', fontSize: '14px', pointerEvents: 'none',
+              color: 'var(--muted)', pointerEvents: 'none', display: 'flex', alignItems: 'center',
               transition: 'all 0.2s'
-            }}>🔍</span>
+            }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </div>
             <input
               type="text"
               placeholder="ค้นหาชื่อลูกค้า..."
@@ -365,8 +387,8 @@ export default function Customers({ session }) {
               }}
               onFocus={(e) => {
                 e.target.style.borderColor = 'var(--primary)';
-                e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2)';
-                e.target.previousSibling.style.color = 'var(--primary)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(252, 213, 53, 0.2)';
+                e.target.previousSibling.style.color = 'var(--theme-ink)';
                 e.target.previousSibling.style.transform = 'translateY(-50%) scale(1.1)';
               }}
               onBlur={(e) => {
@@ -382,46 +404,34 @@ export default function Customers({ session }) {
                 style={{
                   position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
                   background: 'transparent', border: 'none', color: 'var(--muted)',
-                  cursor: 'pointer', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   width: '24px', height: '24px', borderRadius: '50%',
+                  transition: 'all 0.15s'
                 }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'; e.currentTarget.style.color = 'var(--theme-ink)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--muted)'; }}
               >
-                ×
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
             )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-xs)' }}>
             <span style={{ fontSize: '14px', color: 'var(--muted)' }}>แสดง</span>
-            <select
-              value={itemsPerPage}
-              onChange={(e) => setItemsPerPage(Number(e.target.value))}
-              style={{
-                height: '40px',
-                padding: '0 32px 0 12px',
-                borderRadius: 'var(--rounded-lg)',
-                border: '1px solid var(--theme-border)',
-                backgroundColor: 'var(--theme-canvas)',
-                color: 'var(--theme-ink)',
-                fontSize: '14px',
-                fontFamily: 'var(--font-family)',
-                appearance: 'none',
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23707a8a' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E")`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 12px center',
-                outline: 'none',
-                cursor: 'pointer',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-              }}
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-              <option value={999999}>ทั้งหมด</option>
-            </select>
+            <div style={{ width: '100px' }}>
+              <PremiumSelect
+                options={[
+                  { label: '10', value: 10 },
+                  { label: '20', value: 20 },
+                  { label: '50', value: 50 },
+                  { label: '100', value: 100 },
+                  { label: 'ทั้งหมด', value: 999999 }
+                ]}
+                value={itemsPerPage}
+                onChange={(val) => setItemsPerPage(Number(val))}
+                placeholder="10"
+              />
+            </div>
             <span style={{ fontSize: '14px', color: 'var(--muted)' }}>รายการ/หน้า</span>
           </div>
         </div>
@@ -624,24 +634,28 @@ export default function Customers({ session }) {
                 onClick={() => setCurrentPage(1)}
                 disabled={currentPage === 1}
                 style={{
-                  padding: '6px 10px', fontSize: '13px', fontFamily: 'var(--font-family)',
+                  padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   border: '1px solid var(--theme-border)', borderRadius: 'var(--rounded-md)',
                   backgroundColor: 'var(--theme-canvas)', cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
                   color: currentPage === 1 ? 'var(--muted)' : 'var(--theme-ink)', opacity: currentPage === 1 ? 0.4 : 1,
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
-              >«</button>
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+              </button>
               <button
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
                 style={{
-                  padding: '6px 10px', fontSize: '13px', fontFamily: 'var(--font-family)',
+                  padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   border: '1px solid var(--theme-border)', borderRadius: 'var(--rounded-md)',
                   backgroundColor: 'var(--theme-canvas)', cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
                   color: currentPage === 1 ? 'var(--muted)' : 'var(--theme-ink)', opacity: currentPage === 1 ? 0.4 : 1,
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
-              >‹</button>
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1)
                 .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
                 .reduce((acc, p, i, arr) => {
@@ -657,14 +671,14 @@ export default function Customers({ session }) {
                       key={p}
                       onClick={() => setCurrentPage(p)}
                       style={{
-                        padding: '6px 12px', fontSize: '13px', fontWeight: p === currentPage ? 700 : 400,
+                        padding: '6px 12px', fontSize: '13px', fontWeight: p === currentPage ? 700 : 500,
                         fontFamily: 'var(--font-family)',
                         border: p === currentPage ? '1px solid var(--primary)' : '1px solid var(--theme-border)',
                         borderRadius: 'var(--rounded-md)',
                         backgroundColor: p === currentPage ? 'var(--primary)' : 'var(--theme-canvas)',
                         color: p === currentPage ? 'var(--on-primary)' : 'var(--theme-ink)',
                         cursor: 'pointer', transition: 'all 0.15s',
-                        boxShadow: p === currentPage ? '0 4px 12px rgba(59, 130, 246, 0.3)' : '0 2px 4px rgba(0, 0, 0, 0.04)',
+                        boxShadow: p === currentPage ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.04)',
                       }}
                     >{p}</button>
                   )
@@ -673,24 +687,28 @@ export default function Customers({ session }) {
                 onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
                 style={{
-                  padding: '6px 10px', fontSize: '13px', fontFamily: 'var(--font-family)',
+                  padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   border: '1px solid var(--theme-border)', borderRadius: 'var(--rounded-md)',
                   backgroundColor: 'var(--theme-canvas)', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
                   color: currentPage === totalPages ? 'var(--muted)' : 'var(--theme-ink)', opacity: currentPage === totalPages ? 0.4 : 1,
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
-              >›</button>
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
               <button
                 onClick={() => setCurrentPage(totalPages)}
                 disabled={currentPage === totalPages}
                 style={{
-                  padding: '6px 10px', fontSize: '13px', fontFamily: 'var(--font-family)',
+                  padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   border: '1px solid var(--theme-border)', borderRadius: 'var(--rounded-md)',
                   backgroundColor: 'var(--theme-canvas)', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
                   color: currentPage === totalPages ? 'var(--muted)' : 'var(--theme-ink)', opacity: currentPage === totalPages ? 0.4 : 1,
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
-              >»</button>
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+              </button>
             </div>
           </div>
         )}
@@ -725,7 +743,7 @@ export default function Customers({ session }) {
                 background: var(--theme-canvas);
                 border: 1px solid var(--theme-border);
                 box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-                border-radius: 24px; /* Sleek floating dock shape */
+                border-radius: 12px;
                 padding: 16px 24px;
                 display: flex;
                 flex-direction: column;
@@ -737,35 +755,6 @@ export default function Customers({ session }) {
                 .premium-action-bar {
                   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
                 }
-              }
-              .shimmer-btn {
-                background: linear-gradient(110deg, #f59e0b 20%, #fbbf24 40%, #f59e0b 60%);
-                background-size: 200% auto;
-                color: #fff !important;
-                border: none !important;
-                text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-                transition: transform 0.2s, box-shadow 0.2s;
-                border-radius: 100px !important;
-                font-weight: 700 !important;
-              }
-              .shimmer-btn:hover:not(:disabled) {
-                animation: shimmerBtn 2s linear infinite;
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
-              }
-              .btn-outline-glow {
-                background: rgba(245, 158, 11, 0.1) !important;
-                color: #d97706 !important;
-                border: 1px solid rgba(245, 158, 11, 0.3) !important;
-                transition: all 0.2s;
-                border-radius: 100px !important;
-                font-weight: 700 !important;
-              }
-              .btn-outline-glow:hover:not(:disabled) {
-                background: rgba(245, 158, 11, 0.2) !important;
-                border-color: rgba(245, 158, 11, 0.6) !important;
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
               }
               .premium-divider {
                 width: 1px;
@@ -843,6 +832,7 @@ export default function Customers({ session }) {
                       value={batchPrefix}
                       onChange={setBatchPrefix}
                       compact
+                      menuPosition="top"
                     />
                   </div>
                   <button
@@ -852,7 +842,7 @@ export default function Customers({ session }) {
                       height: '36px', padding: '0 16px', fontSize: '13px', fontWeight: 600,
                       fontFamily: 'var(--font-family)',
                       border: '1px solid var(--theme-border)',
-                      borderRadius: '100px',
+                      borderRadius: '6px',
                       backgroundColor: !batchPrefix ? 'var(--theme-canvas)' : 'var(--theme-surface-strong)',
                       color: !batchPrefix ? 'var(--muted)' : 'var(--theme-ink)',
                       cursor: !batchPrefix ? 'not-allowed' : 'pointer',
@@ -876,7 +866,7 @@ export default function Customers({ session }) {
                       height: '36px', padding: '0 16px', fontSize: '13px', fontWeight: 600,
                       fontFamily: 'var(--font-family)',
                       border: '1px solid rgba(246, 70, 93, 0.2)',
-                      borderRadius: '100px',
+                      borderRadius: '6px',
                       backgroundColor: 'rgba(246, 70, 93, 0.05)',
                       color: 'var(--trading-down)',
                       cursor: 'pointer',
@@ -901,48 +891,51 @@ export default function Customers({ session }) {
                 {/* Signatory + Print */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                   <div style={{ width: '220px' }}>
-                    <select
+                    <PremiumSelect
+                      options={signatories.map(s => ({ label: s.name, value: s.id }))}
                       value={selectedSignatoryId}
-                      onChange={(e) => setSelectedSignatoryId(e.target.value)}
-                      style={{
-                        width: '100%', height: '40px',
-                        padding: '0 28px 0 16px',
-                        border: '1px solid var(--theme-border)',
-                        borderRadius: '100px',
-                        fontSize: '13px', fontFamily: 'var(--font-family)', fontWeight: 600,
-                        backgroundColor: 'var(--theme-canvas)',
-                        color: selectedSignatoryId ? 'var(--theme-ink)' : 'var(--muted)',
-                        appearance: 'none',
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23707a8a' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E")`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'right 12px center',
-                        outline: 'none', cursor: 'pointer',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
-                      }}
-                    >
-                      <option value="">— เลือกผู้ลงนาม —</option>
-                      {signatories.map((s) => (
-                        <option key={s.id} value={s.id}>{s.name}</option>
-                      ))}
-                    </select>
+                      onChange={setSelectedSignatoryId}
+                      placeholder="— เลือกผู้ลงนาม —"
+                      menuPosition="top"
+                    />
                   </div>
                   <div style={{ display: 'flex', gap: '10px' }}>
-                    <Button
+                    <button
                       onClick={handleSavePDFs}
                       disabled={!selectedSignatoryId || isGeneratingPDFs}
-                      className="btn-outline-glow"
-                      style={{ height: '40px', padding: '0 20px' }}
+                      style={{ 
+                        height: '40px', padding: '0 16px',
+                        backgroundColor: '#ffffff', border: '1px solid #eaecef', borderRadius: '6px',
+                        color: '#181a20', fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-family)',
+                        cursor: (!selectedSignatoryId || isGeneratingPDFs) ? 'not-allowed' : 'pointer',
+                        opacity: (!selectedSignatoryId || isGeneratingPDFs) ? 0.5 : 1,
+                        display: 'flex', alignItems: 'center', gap: '8px',
+                        transition: 'background-color 0.2s ease',
+                      }}
+                      onMouseOver={(e) => { if(!(!selectedSignatoryId || isGeneratingPDFs)) e.currentTarget.style.backgroundColor = '#f5f5f5'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
                     >
-                      {isGeneratingPDFs ? 'กำลังสร้าง...' : '⬇️ บันทึกแยก PDF'}
-                    </Button>
-                    <Button
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#181a20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      {isGeneratingPDFs ? 'กำลังสร้าง...' : 'บันทึกแยก PDF'}
+                    </button>
+                    <button
                       onClick={handlePrint}
                       disabled={!selectedSignatoryId || isGeneratingPDFs}
-                      className="shimmer-btn"
-                      style={{ height: '40px', padding: '0 24px' }}
+                      style={{ 
+                        height: '40px', padding: '0 20px',
+                        backgroundColor: '#FCD535', border: 'none', borderRadius: '6px',
+                        color: '#181a20', fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-family)',
+                        cursor: (!selectedSignatoryId || isGeneratingPDFs) ? 'not-allowed' : 'pointer',
+                        opacity: (!selectedSignatoryId || isGeneratingPDFs) ? 0.5 : 1,
+                        display: 'flex', alignItems: 'center', gap: '8px',
+                        transition: 'background-color 0.2s ease',
+                      }}
+                      onMouseOver={(e) => { if(!(!selectedSignatoryId || isGeneratingPDFs)) e.currentTarget.style.backgroundColor = '#f0b90b'; }}
+                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#FCD535'; }}
                     >
-                      🖨️ พิมพ์เอกสาร
-                    </Button>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#181a20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                      พิมพ์เอกสาร
+                    </button>
                   </div>
                 </div>
               </div>

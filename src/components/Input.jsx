@@ -11,20 +11,20 @@ export default function Input({ type = 'text', value, onChange, placeholder, req
   const labelStyle = {
     fontSize: '14px',
     fontWeight: '500',
-    color: 'var(--ink)'
+    color: 'var(--theme-ink)'
   };
 
   const inputStyle = {
-    backgroundColor: 'var(--canvas-light)',
-    border: '1px solid var(--hairline-on-light)',
+    backgroundColor: 'var(--theme-canvas)',
+    border: '1px solid var(--theme-border)',
     borderRadius: 'var(--rounded-md)',
     padding: '10px 16px',
     height: '40px',
     fontSize: '14px',
     fontFamily: 'var(--font-family)',
-    color: 'var(--ink)',
+    color: 'var(--theme-ink)',
     outline: 'none',
-    transition: 'box-shadow 0.2s',
+    transition: 'all 0.2s',
     width: '100%'
   };
 
@@ -39,8 +39,8 @@ export default function Input({ type = 'text', value, onChange, placeholder, req
         placeholder={placeholder}
         required={required}
         style={inputStyle}
-        onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px var(--info-ring)'}
-        onBlur={(e) => e.target.style.boxShadow = 'none'}
+        onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 2px rgba(252, 213, 53, 0.2)'; }}
+        onBlur={(e) => { e.target.style.borderColor = 'var(--theme-border)'; e.target.style.boxShadow = 'none'; }}
       />
     </div>
   );

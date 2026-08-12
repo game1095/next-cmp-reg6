@@ -26,16 +26,25 @@ export default function Layout({ session, children }) {
   };
 
   return (
-    <div style={{ 
+    <div className="app-layout" style={{ 
       minHeight: '100vh', 
       display: 'flex', 
       flexDirection: 'row',
       backgroundColor: 'var(--theme-canvas)',
       overflow: 'hidden' // Prevent double scrollbars
     }}>
+      <style>{`
+        .nav-sidebar-item:not(.active):hover {
+          background-color: var(--theme-canvas) !important;
+          color: var(--theme-ink) !important;
+        }
+        .nav-sidebar-item:not(.active):hover .nav-sidebar-icon {
+          color: var(--theme-ink) !important;
+        }
+      `}</style>
       {/* ── Left Sidebar ── */}
       <aside className="no-print" style={{
-        width: '260px',
+        width: '280px',
         flexShrink: 0,
         backgroundColor: 'var(--theme-surface-strong)', // Solid premium look
         borderRight: '1px solid var(--theme-border)',
@@ -53,23 +62,22 @@ export default function Layout({ session, children }) {
           alignItems: 'center',
           gap: '12px',
           fontWeight: 800,
-          fontSize: '20px',
+          fontSize: '22px',
           color: 'var(--theme-ink)',
           letterSpacing: '-0.5px',
-          padding: '24px',
-          borderBottom: '1px solid rgba(0,0,0,0.05)',
+          padding: '28px 24px 20px',
         }}>
           <div style={{
-            width: '32px',
-            height: '32px',
+            width: '36px',
+            height: '36px',
             backgroundColor: 'var(--primary)',
-            borderRadius: '8px',
+            borderRadius: '10px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(59,130,246,0.3)'
+            boxShadow: '0 4px 12px rgba(252, 213, 53, 0.2)'
           }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--theme-canvas)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--on-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
           </div>
@@ -80,23 +88,66 @@ export default function Layout({ session, children }) {
         <div style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          gap: '8px', 
-          padding: '24px 16px',
-          flex: 1, // Push the bottom section down
+          gap: '4px', 
+          padding: '8px 16px',
+          flex: 1,
           overflowY: 'auto'
         }}>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '1px', marginLeft: '12px', marginBottom: '8px' }}>
+          <span style={{ 
+            fontSize: '11px', 
+            fontWeight: 700, 
+            color: 'var(--muted)', 
+            textTransform: 'uppercase', 
+            letterSpacing: '1.2px', 
+            marginLeft: '12px', 
+            marginBottom: '12px' 
+          }}>
             Main Menu
           </span>
-          <NavItem to="/" label="ข้อมูลลูกค้า" icon="👥" />
-          <NavItem to="/signatories" label="ผู้ลงนาม" icon="✍️" />
-          <NavItem to="/guide" label="แนะนำการใช้งาน" icon="📖" />
-          <NavItem to="/developer" label="ผู้พัฒนา" icon="✨" />
+          <NavItem 
+            to="/" 
+            label="ข้อมูลลูกค้า" 
+            icon={
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            } 
+          />
+          <NavItem 
+            to="/signatories" 
+            label="ผู้ลงนาม" 
+            icon={
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+            } 
+          />
+          <NavItem 
+            to="/guide" 
+            label="แนะนำการใช้งาน" 
+            icon={
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+              </svg>
+            } 
+          />
+          <NavItem 
+            to="/developer" 
+            label="ผู้พัฒนา" 
+            icon={
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            } 
+          />
         </div>
 
         {/* Bottom — User & Theme & Logout */}
         <div style={{
-          padding: '20px 16px',
+          padding: '24px 20px',
           borderTop: '1px solid var(--theme-border)',
           display: 'flex',
           flexDirection: 'column',
@@ -115,9 +166,9 @@ export default function Layout({ session, children }) {
           }}>
             <div style={{
               width: '32px', height: '32px', borderRadius: '50%',
-              backgroundColor: 'var(--primary)', color: 'var(--on-primary)',
+              backgroundColor: 'rgba(252, 213, 53, 0.1)', color: 'var(--primary)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '13px', fontWeight: 700, flexShrink: 0
+              fontSize: '13px', fontWeight: 800, flexShrink: 0
             }}>
               {userEmail.substring(0, 2).toUpperCase()}
             </div>
@@ -142,24 +193,23 @@ export default function Layout({ session, children }) {
               onClick={() => setIsDark(!isDark)}
               style={{
                 flex: 1,
-                background: 'var(--theme-canvas)',
+                background: 'transparent',
                 border: '1px solid var(--theme-border)',
                 borderRadius: '8px',
-                padding: '8px',
+                padding: '10px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--theme-ink)',
+                color: 'var(--muted)',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
               }}
-              onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--theme-border)'; e.currentTarget.style.color = 'var(--theme-ink)'; }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--theme-canvas)'; e.currentTarget.style.borderColor = 'var(--muted)'; e.currentTarget.style.color = 'var(--theme-ink)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'var(--theme-border)'; e.currentTarget.style.color = 'var(--muted)'; }}
               title={isDark ? "เปลี่ยนเป็นโหมดสว่าง" : "เปลี่ยนเป็นโหมดมืด"}
             >
               {isDark ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="5"></circle>
                   <line x1="12" y1="1" x2="12" y2="3"></line>
                   <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -171,7 +221,7 @@ export default function Layout({ session, children }) {
                   <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
               )}
@@ -181,25 +231,22 @@ export default function Layout({ session, children }) {
               onClick={handleLogout}
               style={{
                 flex: 1,
-                background: 'rgba(246, 70, 93, 0.05)',
-                border: '1px solid rgba(246, 70, 93, 0.2)',
+                background: 'transparent',
+                border: '1px solid var(--theme-border)',
                 borderRadius: '8px',
-                padding: '8px',
-                fontSize: '13px',
-                fontWeight: 600,
+                padding: '10px',
                 color: 'var(--trading-down)',
                 cursor: 'pointer',
-                fontFamily: 'var(--font-family)',
                 transition: 'all 0.2s',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.1)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.05)'; }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.05)'; e.currentTarget.style.borderColor = 'rgba(246, 70, 93, 0.3)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'var(--theme-border)'; }}
               title="ออกจากระบบ"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                 <polyline points="16 17 21 12 16 7"></polyline>
                 <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -210,7 +257,7 @@ export default function Layout({ session, children }) {
       </aside>
 
       {/* ── Page Content ── */}
-      <main style={{
+      <main className="app-main" style={{
         flex: 1,
         height: '100vh',
         overflowY: 'auto',
@@ -241,21 +288,25 @@ function NavItem({ to, label, icon }) {
         gap: '12px',
         padding: '12px 16px',
         fontSize: '14px',
-        fontWeight: isActive ? 700 : 500,
-        color: isActive ? 'var(--primary)' : 'var(--muted)',
-        backgroundColor: isActive ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-        borderRadius: '12px',
+        fontWeight: isActive ? 600 : 500,
+        color: isActive ? 'var(--theme-ink)' : 'var(--muted)',
+        backgroundColor: isActive ? 'var(--theme-canvas)' : 'transparent',
+        borderRadius: '8px',
         textDecoration: 'none',
         transition: 'all 0.2s ease',
+        boxShadow: isActive ? '0 4px 12px rgba(0,0,0,0.03)' : 'none',
+        border: isActive ? '1px solid var(--theme-border)' : '1px solid transparent',
       })}
-      className="nav-sidebar-item"
+      className={({ isActive }) => `nav-sidebar-item ${isActive ? 'active' : ''}`}
     >
       {({ isActive }) => (
         <>
-          <span style={{ 
-            fontSize: '18px', 
-            filter: isActive ? 'drop-shadow(0 2px 4px rgba(59,130,246,0.3))' : 'grayscale(100%) opacity(0.6)',
-            transition: 'all 0.2s ease'
+          <span className="nav-sidebar-icon" style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: isActive ? 'var(--primary)' : 'currentColor',
+            transition: 'color 0.2s ease'
           }}>
             {icon}
           </span>
