@@ -72,6 +72,7 @@ export default function Customers({ session }) {
   // Signatory for printing
   const [selectedSignatoryId, setSelectedSignatoryId] = useState('');
   const [signatories, setSignatories] = useState([]);
+  const [includeSignatureImage, setIncludeSignatureImage] = useState(true);
 
   // Print state
   const [printData, setPrintData] = useState(null);
@@ -192,7 +193,7 @@ export default function Customers({ session }) {
     const signatory = signatories.find((s) => s.id === selectedSignatoryId) || null;
     
     flushSync(() => {
-      setPrintData({ customers: selectedCustomers, signatory });
+      setPrintData({ customers: selectedCustomers, signatory, includeSignatureImage });
     });
 
     // Mark as printed in Supabase
@@ -233,7 +234,7 @@ export default function Customers({ session }) {
         
         // Render exactly one customer in the PrintPreview
         flushSync(() => {
-          setPrintData({ customers: [customer], signatory });
+          setPrintData({ customers: [customer], signatory, includeSignatureImage });
         });
 
         // Wait for images/fonts to be fully loaded
@@ -317,7 +318,7 @@ export default function Customers({ session }) {
                 backgroundColor: 'var(--primary)',
                 color: 'var(--on-primary)',
               }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <i className="fa-solid fa-users" style={{ fontSize: '20px' }}></i>
               </span>
               ข้อมูลลูกค้า
             </h1>
@@ -364,7 +365,7 @@ export default function Customers({ session }) {
               color: 'var(--muted)', pointerEvents: 'none', display: 'flex', alignItems: 'center',
               transition: 'all 0.2s'
             }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <i className="fa-solid fa-magnifying-glass" style={{ fontSize: '14px' }}></i>
             </div>
             <input
               type="text"
@@ -411,7 +412,7 @@ export default function Customers({ session }) {
                 onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'; e.currentTarget.style.color = 'var(--theme-ink)'; }}
                 onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--muted)'; }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <i className="fa-solid fa-xmark" style={{ fontSize: '12px' }}></i>
               </button>
             )}
           </div>
@@ -461,6 +462,9 @@ export default function Customers({ session }) {
         }}>
           {/* Table Header */}
           <div style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 10,
             display: 'grid',
             gridTemplateColumns: '48px 48px 1fr 200px',
             alignItems: 'center',
@@ -520,7 +524,7 @@ export default function Customers({ session }) {
               justifyContent: 'center',
               gap: 'var(--spacing-md)'
             }}>
-              <img src="/images/empty.svg" alt="Empty" style={{ width: '160px', height: 'auto', opacity: 0.8 }} />
+              <i className="fa-solid fa-folder-open" style={{ fontSize: '64px', color: 'var(--theme-border-strong)', opacity: 0.5, marginBottom: '8px' }}></i>
               <div style={{ color: 'var(--muted)', fontSize: '15px', fontWeight: 500 }}>
                 {searchTerm ? 'ไม่พบข้อมูลลูกค้าที่คุณค้นหา' : 'ยังไม่มีข้อมูลลูกค้าในระบบ'}
               </div>
@@ -641,7 +645,7 @@ export default function Customers({ session }) {
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+                <i className="fa-solid fa-angles-left" style={{ fontSize: '14px' }}></i>
               </button>
               <button
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
@@ -654,7 +658,7 @@ export default function Customers({ session }) {
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <i className="fa-solid fa-angle-left" style={{ fontSize: '14px' }}></i>
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1)
                 .filter(p => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
@@ -694,7 +698,7 @@ export default function Customers({ session }) {
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <i className="fa-solid fa-angle-right" style={{ fontSize: '14px' }}></i>
               </button>
               <button
                 onClick={() => setCurrentPage(totalPages)}
@@ -707,7 +711,7 @@ export default function Customers({ session }) {
                   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)', transition: 'all 0.15s'
                 }}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+                <i className="fa-solid fa-angles-right" style={{ fontSize: '14px' }}></i>
               </button>
             </div>
           </div>
@@ -790,153 +794,168 @@ export default function Customers({ session }) {
                 gap: '20px',
                 flexWrap: 'wrap',
               }}>
-                {/* Selection info */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '140px' }}>
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    width: '32px', height: '32px', borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #f59e0b, #fbbf24)', color: '#fff',
-                    fontSize: '14px', fontWeight: 800,
-                    animation: 'pulseGlow 2s infinite',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.2)'
-                  }}>
-                    {selectedIds.size}
-                  </span>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ fontSize: '14px', color: 'var(--theme-ink)', fontWeight: 700 }}>
-                      รายการที่เลือก
+                
+                {/* ── LEFT & CENTER: Selection and Config ── */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap', flex: 1 }}>
+                  
+                  {/* Step 1: Selection info */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '130px' }}>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      width: '32px', height: '32px', borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #f59e0b, #fbbf24)', color: '#fff',
+                      fontSize: '14px', fontWeight: 800,
+                      animation: 'pulseGlow 2s infinite',
+                      textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                    }}>
+                      {selectedIds.size}
                     </span>
-                    <button
-                      onClick={clearSelection}
-                      style={{
-                        fontSize: '12px', color: 'var(--muted)', background: 'none',
-                        border: 'none', cursor: 'pointer', fontFamily: 'var(--font-family)',
-                        textDecoration: 'underline', padding: 0, textAlign: 'left',
-                        transition: 'color 0.2s'
-                      }}
-                      onMouseOver={(e) => e.currentTarget.style.color = 'var(--trading-down)'}
-                      onMouseOut={(e) => e.currentTarget.style.color = 'var(--muted)'}
-                    >
-                      ยกเลิกทั้งหมด
-                    </button>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontSize: '14px', color: 'var(--theme-ink)', fontWeight: 700 }}>
+                        รายการที่เลือก
+                      </span>
+                      <button
+                        onClick={clearSelection}
+                        style={{
+                          fontSize: '12px', color: 'var(--muted)', background: 'none',
+                          border: 'none', cursor: 'pointer', fontFamily: 'var(--font-family)',
+                          textDecoration: 'underline', padding: 0, textAlign: 'left',
+                          transition: 'color 0.2s'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.color = 'var(--trading-down)'}
+                        onMouseOut={(e) => e.currentTarget.style.color = 'var(--muted)'}
+                      >
+                        ยกเลิกทั้งหมด
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="premium-divider" />
+
+                  {/* Step 2: Configuration Group */}
+                  <div style={{ 
+                    display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap',
+                    backgroundColor: 'var(--theme-canvas)', padding: '6px 16px', 
+                    borderRadius: 'var(--rounded-lg)', border: '1px solid var(--theme-border)',
+                    boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.02)'
+                  }}>
+                    
+                    {/* Prefix */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: 600 }}>คำนำหน้า:</span>
+                      <div style={{ width: '130px' }}>
+                        <PrefixSelector
+                          value={batchPrefix}
+                          onChange={setBatchPrefix}
+                          compact
+                          menuPosition="top"
+                        />
+                      </div>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        <button
+                          onClick={applyBatchPrefix}
+                          disabled={!batchPrefix}
+                          style={{
+                            height: '32px', padding: '0 12px', fontSize: '12px', fontWeight: 600,
+                            fontFamily: 'var(--font-family)', border: '1px solid var(--theme-border)', borderRadius: '6px',
+                            backgroundColor: !batchPrefix ? 'transparent' : 'var(--theme-surface-strong)',
+                            color: !batchPrefix ? 'var(--muted)' : 'var(--theme-ink)',
+                            cursor: !batchPrefix ? 'not-allowed' : 'pointer', opacity: !batchPrefix ? 0.5 : 1,
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseOver={(e) => { if (batchPrefix) e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                          onMouseOut={(e) => { if (batchPrefix) e.currentTarget.style.transform = 'translateY(0)'; }}
+                        >
+                          ตั้งค่า
+                        </button>
+                        <button
+                          onClick={() => {
+                            const next = { ...prefixes };
+                            selectedIds.forEach((id) => { next[id] = ''; });
+                            setPrefixes(next);
+                          }}
+                          style={{
+                            height: '32px', padding: '0 12px', fontSize: '12px', fontWeight: 600,
+                            fontFamily: 'var(--font-family)', border: '1px solid rgba(246, 70, 93, 0.2)', borderRadius: '6px',
+                            backgroundColor: 'rgba(246, 70, 93, 0.05)', color: 'var(--trading-down)',
+                            cursor: 'pointer', transition: 'all 0.2s'
+                          }}
+                          onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.1)'; }}
+                          onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.05)'; }}
+                        >
+                          ล้าง
+                        </button>
+                      </div>
+                    </div>
+
+                    <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--theme-border)' }} />
+
+                    {/* Signatory */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: 600 }}>ผู้ลงนาม:</span>
+                      <div style={{ width: '180px' }}>
+                        <PremiumSelect
+                          options={signatories.map(s => ({ label: s.name, value: s.id }))}
+                          value={selectedSignatoryId}
+                          onChange={setSelectedSignatoryId}
+                          placeholder="เลือกผู้ลงนาม"
+                          menuPosition="top"
+                        />
+                      </div>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--theme-ink)', cursor: 'pointer', marginLeft: '4px' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={includeSignatureImage}
+                          onChange={(e) => setIncludeSignatureImage(e.target.checked)}
+                          style={{ accentColor: 'var(--primary)', width: '16px', height: '16px', cursor: 'pointer' }}
+                        />
+                        ลายเซ็น
+                      </label>
+                    </div>
+
                   </div>
                 </div>
 
-                <div className="premium-divider" />
-
-                {/* Batch prefix */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>คำนำหน้า:</span>
-                  <div style={{ width: '160px' }}>
-                    <PrefixSelector
-                      value={batchPrefix}
-                      onChange={setBatchPrefix}
-                      compact
-                      menuPosition="top"
-                    />
-                  </div>
+                {/* ── RIGHT: Actions ── */}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                   <button
-                    onClick={applyBatchPrefix}
-                    disabled={!batchPrefix}
-                    style={{
-                      height: '36px', padding: '0 16px', fontSize: '13px', fontWeight: 600,
-                      fontFamily: 'var(--font-family)',
-                      border: '1px solid var(--theme-border)',
-                      borderRadius: '6px',
-                      backgroundColor: !batchPrefix ? 'var(--theme-canvas)' : 'var(--theme-surface-strong)',
-                      color: !batchPrefix ? 'var(--muted)' : 'var(--theme-ink)',
-                      cursor: !batchPrefix ? 'not-allowed' : 'pointer',
-                      opacity: !batchPrefix ? 0.5 : 1,
-                      whiteSpace: 'nowrap',
-                      transition: 'all 0.2s',
-                      boxShadow: batchPrefix ? '0 2px 4px rgba(0,0,0,0.02)' : 'none'
+                    onClick={handleSavePDFs}
+                    disabled={!selectedSignatoryId || isGeneratingPDFs}
+                    style={{ 
+                      height: '40px', padding: '0 24px',
+                      backgroundColor: 'var(--theme-canvas)', border: '1px solid var(--theme-border)', borderRadius: 'var(--rounded-md)',
+                      color: 'var(--theme-ink)', fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-family)',
+                      cursor: (!selectedSignatoryId || isGeneratingPDFs) ? 'not-allowed' : 'pointer',
+                      opacity: (!selectedSignatoryId || isGeneratingPDFs) ? 0.5 : 1,
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: 'none'
                     }}
-                    onMouseOver={(e) => { if (batchPrefix) e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                    onMouseOut={(e) => { if (batchPrefix) e.currentTarget.style.transform = 'translateY(0)'; }}
+                    onMouseOver={(e) => { if(!(!selectedSignatoryId || isGeneratingPDFs)) { e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'; e.currentTarget.style.borderColor = 'var(--theme-border-strong)'; } }}
+                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--theme-canvas)'; e.currentTarget.style.borderColor = 'var(--theme-border)'; }}
                   >
-                    ตั้งทั้งหมด
+                    <i className="fa-solid fa-file-pdf" style={{ fontSize: '16px' }}></i>
+                    {isGeneratingPDFs ? 'กำลังสร้าง...' : 'บันทึกแยก PDF'}
                   </button>
                   <button
-                    onClick={() => {
-                      const next = { ...prefixes };
-                      selectedIds.forEach((id) => { next[id] = ''; });
-                      setPrefixes(next);
+                    onClick={handlePrint}
+                    disabled={!selectedSignatoryId || isGeneratingPDFs}
+                    style={{ 
+                      height: '40px', padding: '0 24px',
+                      backgroundColor: 'var(--primary)', border: 'none', borderRadius: 'var(--rounded-md)',
+                      color: 'var(--on-primary)', fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-family)',
+                      cursor: (!selectedSignatoryId || isGeneratingPDFs) ? 'not-allowed' : 'pointer',
+                      opacity: (!selectedSignatoryId || isGeneratingPDFs) ? 0.5 : 1,
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      transition: 'background-color 0.2s ease',
+                      boxShadow: 'none'
                     }}
-                    style={{
-                      height: '36px', padding: '0 16px', fontSize: '13px', fontWeight: 600,
-                      fontFamily: 'var(--font-family)',
-                      border: '1px solid rgba(246, 70, 93, 0.2)',
-                      borderRadius: '6px',
-                      backgroundColor: 'rgba(246, 70, 93, 0.05)',
-                      color: 'var(--trading-down)',
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseOver={(e) => { 
-                      e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.1)'; 
-                      e.currentTarget.style.transform = 'translateY(-1px)';
-                    }}
-                    onMouseOut={(e) => { 
-                      e.currentTarget.style.backgroundColor = 'rgba(246, 70, 93, 0.05)';
-                      e.currentTarget.style.transform = 'translateY(0)';
-                    }}
+                    onMouseOver={(e) => { if(!(!selectedSignatoryId || isGeneratingPDFs)) e.currentTarget.style.backgroundColor = 'var(--primary-active)'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; }}
                   >
-                    ล้างคำนำหน้า
+                    <i className="fa-solid fa-print" style={{ fontSize: '16px' }}></i>
+                    พิมพ์เอกสาร
                   </button>
-                </div>
-
-                <div className="premium-divider" style={{ display: 'none' }} />
-
-                {/* Signatory + Print */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                  <div style={{ width: '220px' }}>
-                    <PremiumSelect
-                      options={signatories.map(s => ({ label: s.name, value: s.id }))}
-                      value={selectedSignatoryId}
-                      onChange={setSelectedSignatoryId}
-                      placeholder="— เลือกผู้ลงนาม —"
-                      menuPosition="top"
-                    />
-                  </div>
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <button
-                      onClick={handleSavePDFs}
-                      disabled={!selectedSignatoryId || isGeneratingPDFs}
-                      style={{ 
-                        height: '40px', padding: '0 16px',
-                        backgroundColor: '#ffffff', border: '1px solid #eaecef', borderRadius: '6px',
-                        color: '#181a20', fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-family)',
-                        cursor: (!selectedSignatoryId || isGeneratingPDFs) ? 'not-allowed' : 'pointer',
-                        opacity: (!selectedSignatoryId || isGeneratingPDFs) ? 0.5 : 1,
-                        display: 'flex', alignItems: 'center', gap: '8px',
-                        transition: 'background-color 0.2s ease',
-                      }}
-                      onMouseOver={(e) => { if(!(!selectedSignatoryId || isGeneratingPDFs)) e.currentTarget.style.backgroundColor = '#f5f5f5'; }}
-                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffffff'; }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#181a20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                      {isGeneratingPDFs ? 'กำลังสร้าง...' : 'บันทึกแยก PDF'}
-                    </button>
-                    <button
-                      onClick={handlePrint}
-                      disabled={!selectedSignatoryId || isGeneratingPDFs}
-                      style={{ 
-                        height: '40px', padding: '0 20px',
-                        backgroundColor: '#FCD535', border: 'none', borderRadius: '6px',
-                        color: '#181a20', fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-family)',
-                        cursor: (!selectedSignatoryId || isGeneratingPDFs) ? 'not-allowed' : 'pointer',
-                        opacity: (!selectedSignatoryId || isGeneratingPDFs) ? 0.5 : 1,
-                        display: 'flex', alignItems: 'center', gap: '8px',
-                        transition: 'background-color 0.2s ease',
-                      }}
-                      onMouseOver={(e) => { if(!(!selectedSignatoryId || isGeneratingPDFs)) e.currentTarget.style.backgroundColor = '#f0b90b'; }}
-                      onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#FCD535'; }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#181a20" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                      พิมพ์เอกสาร
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -949,6 +968,7 @@ export default function Customers({ session }) {
         <PrintPreview
           customers={printData.customers}
           signatory={printData.signatory}
+          includeSignatureImage={printData.includeSignatureImage}
           postCode={postCode}
           postName={postName}
         />

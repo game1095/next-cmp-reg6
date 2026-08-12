@@ -73,7 +73,7 @@ export default function Modal({ isOpen, onClose, title, children, width = '480px
             onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--theme-surface-strong)'; e.currentTarget.style.color = 'var(--theme-ink)'; }}
             onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--muted)'; }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <i className="fa-solid fa-xmark" style={{ fontSize: '14px' }}></i>
           </button>
         </div>
 

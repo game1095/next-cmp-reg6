@@ -4,6 +4,59 @@ import Modal from "./Modal";
 import Button from "./Button";
 import Input from "./Input";
 
+const removeImageBackground = (file) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Make pixels with high luminance (white/light gray) transparent
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+        
+        // Advanced Signature Extraction with Anti-aliasing preservation
+        const darkThreshold = 50;   // Core ink pixels (fully opaque)
+        const lightThreshold = 100; // Shadows & paper background (fully transparent)
+        
+        if (luminance >= lightThreshold) {
+          data[i + 3] = 0; // Transparent
+        } else if (luminance <= darkThreshold) {
+          data[i + 3] = 255; // Opaque
+        } else {
+          // Smooth alpha transition for the edges of the ink
+          const alphaRatio = 1 - ((luminance - darkThreshold) / (lightThreshold - darkThreshold));
+          data[i + 3] = Math.round(255 * alphaRatio);
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, ".png"), {
+            type: "image/png",
+          });
+          resolve(newFile);
+        } else {
+          reject(new Error("Failed to create blob from canvas"));
+        }
+      }, "image/png");
+    };
+    img.onerror = () => reject(new Error("Failed to load image"));
+    img.src = URL.createObjectURL(file);
+  });
+};
+
 export default function SignatoryModal({
   isOpen,
   onClose,
@@ -12,10 +65,13 @@ export default function SignatoryModal({
 }) {
   const [name, setName] = useState("");
   const [position, setPosition] = useState("");
+  const [address, setAddress] = useState("");
+  const [tel, setTel] = useState("");
   const [signatureFile, setSignatureFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
 
   const [isDefault, setIsDefault] = useState(false);
 
@@ -25,6 +81,8 @@ export default function SignatoryModal({
     if (editData) {
       setName(editData.name || "");
       setPosition(editData.position || "");
+      setAddress(editData.address || "");
+      setTel(editData.tel || "");
       setPreviewUrl(editData.signature_url || "");
       setIsDefault(
         localStorage.getItem("default_signatory_id") === editData.id,
@@ -32,6 +90,8 @@ export default function SignatoryModal({
     } else {
       setName("");
       setPosition("");
+      setAddress("");
+      setTel("");
       setPreviewUrl("");
       setIsDefault(false);
     }
@@ -39,11 +99,21 @@ export default function SignatoryModal({
     setError(null);
   }, [editData, isOpen]);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSignatureFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      try {
+        setIsProcessingImage(true);
+        setError(null);
+        const processedFile = await removeImageBackground(file);
+        setSignatureFile(processedFile);
+        setPreviewUrl(URL.createObjectURL(processedFile));
+      } catch (err) {
+        console.error("Image processing error:", err);
+        setError("ไม่สามารถประมวลผลพื้นหลังรูปภาพได้");
+      } finally {
+        setIsProcessingImage(false);
+      }
     }
   };
 
@@ -71,6 +141,10 @@ export default function SignatoryModal({
     setError(null);
 
     try {
+      if (!isEditing && !signatureFile) {
+        throw new Error("กรุณาอัปโหลดภาพลายเซ็น");
+      }
+
       let signatureUrl = editData?.signature_url || null;
 
       // Upload new signature image if provided
@@ -81,7 +155,7 @@ export default function SignatoryModal({
       if (isEditing) {
         const { error: updateError } = await supabase
           .from(TABLES.SIGNATORIES)
-          .update({ name, position, signature_url: signatureUrl })
+          .update({ name, position, address, tel, signature_url: signatureUrl })
           .eq("id", editData.id);
 
         if (updateError) throw updateError;
@@ -103,6 +177,8 @@ export default function SignatoryModal({
           .insert({
             name,
             position,
+            address,
+            tel,
             signature_url: signatureUrl,
             user_id: user.id,
           })
@@ -130,6 +206,7 @@ export default function SignatoryModal({
       isOpen={isOpen}
       onClose={onClose}
       title={isEditing ? "แก้ไขผู้ลงนาม" : "เพิ่มผู้ลงนาม"}
+      width="640px"
     >
       {error && (
         <div
@@ -147,22 +224,40 @@ export default function SignatoryModal({
       )}
 
       <form onSubmit={handleSubmit}>
-        <Input
-          id="sig-name"
-          label="ชื่อ-นามสกุล"
-          placeholder="นายทดสอบ สวัสดีครับ"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <Input
-          id="sig-position"
-          label="ตำแหน่ง"
-          placeholder="หัวหน้าที่ทำการไปรษณีย์จังหวัดทดสอบ / หัวหน้าไปรษณีย์ทดสอบ"
-          value={position}
-          onChange={(e) => setPosition(e.target.value)}
-          required
-        />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 var(--spacing-md)" }}>
+          <Input
+            id="sig-name"
+            label="ชื่อ-นามสกุล"
+            placeholder="นายทดสอบ สวัสดีครับ"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <Input
+            id="sig-position"
+            label="ตำแหน่ง"
+            placeholder="หัวหน้าไปรษณีย์ทดสอบ"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+            required
+          />
+          <Input
+            id="sig-address"
+            label="ที่อยู่"
+            placeholder="123 หมู่ 4 ต.ทดสอบ อ.ทดสอบ จ.ทดสอบ 12345"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+          <Input
+            id="sig-tel"
+            label="เบอร์โทรศัพท์"
+            placeholder="02-123-4567, 081-234-5678"
+            value={tel}
+            onChange={(e) => setTel(e.target.value)}
+            required
+          />
+        </div>
 
         {/* Signature Image Upload */}
         <div style={{ marginBottom: "var(--spacing-md)" }}>
@@ -176,6 +271,7 @@ export default function SignatoryModal({
             }}
           >
             ภาพลายเซ็น
+            {!isEditing && <span style={{ color: 'var(--trading-down)', marginLeft: '4px' }}>*</span>}
           </label>
           <div style={{ position: "relative" }}>
             <input
@@ -220,35 +316,50 @@ export default function SignatoryModal({
                 e.currentTarget.style.color = "var(--muted)";
               }}
             >
-              <div style={{ color: "inherit", transition: "color 0.2s ease" }}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-              </div>
-              <div
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  color: "var(--theme-ink)",
-                }}
-              >
-                คลิกเพื่ออัปโหลดลายเซ็น
-              </div>
-              <div style={{ fontSize: "12px", color: "var(--muted)" }}>
-                PNG หรือ JPG (แนะนำพื้นหลังโปร่งใส)
-              </div>
+              {isProcessingImage ? (
+                <>
+                  <div
+                    className="spinner"
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      border: "3px solid var(--theme-border)",
+                      borderTopColor: "var(--primary)",
+                      borderRadius: "50%",
+                      animation: "spin 1s linear infinite",
+                      marginBottom: "8px",
+                    }}
+                  />
+                  <style>
+                    {`
+                      @keyframes spin {
+                        to { transform: rotate(360deg); }
+                      }
+                    `}
+                  </style>
+                  <div style={{ fontSize: "14px", fontWeight: 600, color: "var(--theme-ink)" }}>
+                    กำลังลบพื้นหลังอัตโนมัติ...
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ color: "inherit", transition: "color 0.2s ease" }}>
+                    <i className="fa-solid fa-cloud-arrow-up" style={{ fontSize: '32px' }}></i>
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "var(--theme-ink)",
+                    }}
+                  >
+                    คลิกเพื่ออัปโหลดลายเซ็น
+                  </div>
+                  <div style={{ fontSize: "12px", color: "var(--muted)" }}>
+                    PNG หรือ JPG (ลบพื้นหลังขาวอัตโนมัติ)
+                  </div>
+                </>
+              )}
             </div>
           </div>
           {previewUrl && (
@@ -317,19 +428,7 @@ export default function SignatoryModal({
               }}
             >
               {isDefault && (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="var(--on-primary)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+                <i className="fa-solid fa-check" style={{ fontSize: '12px', color: 'var(--on-primary)' }}></i>
               )}
             </div>
             <input

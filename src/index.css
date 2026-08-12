@@ -217,6 +217,7 @@ a {
   position: relative;
   box-sizing: border-box;
   width: 100%;
+  min-height: 296mm;
 }
 
 .print-page:last-child {
@@ -265,7 +266,11 @@ a {
 
 .print-meta-table td {
   vertical-align: top;
-  padding: 0;
+  padding-bottom: 6px;
+}
+
+.print-meta-table tr:last-child td {
+  padding-bottom: 0;
 }
 
 .print-meta-table .meta-label {
@@ -277,11 +282,12 @@ a {
   margin-bottom: 12px;
   text-align: justify;
   text-justify: distribute;
+  line-height: 1.35;
 }
 
 .print-body-text p {
   text-indent: 2.5cm; 
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   margin-top: 0;
 }
 
@@ -349,7 +355,9 @@ a {
 }
 
 .print-footer {
-  margin-top: 40px;
+  position: absolute;
+  bottom: 20mm;
+  left: 15mm;
   font-size: 14px;
 }
 

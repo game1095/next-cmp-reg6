@@ -30,7 +30,12 @@ export default function Input({ type = 'text', value, onChange, placeholder, req
 
   return (
     <div style={containerStyle}>
-      {label && <label htmlFor={id} style={labelStyle}>{label}</label>}
+      {label && (
+        <label htmlFor={id} style={labelStyle}>
+          {label}
+          {required && <span style={{ color: 'var(--trading-down)', marginLeft: '4px' }}>*</span>}
+        </label>
+      )}
       <input
         id={id}
         type={type}
