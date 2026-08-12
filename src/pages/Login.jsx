@@ -155,23 +155,7 @@ export default function Login() {
               style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}
             >
               <div className="feature-icon-box">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#FCD535"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
+                <i className="fa-solid fa-file-pdf" style={{ fontSize: '24px', color: '#FCD535' }}></i>
               </div>
               <div>
                 <div
@@ -203,22 +187,7 @@ export default function Login() {
               style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}
             >
               <div className="feature-icon-box">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#FCD535"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
+                <i className="fa-solid fa-users" style={{ fontSize: '24px', color: '#FCD535' }}></i>
               </div>
               <div>
                 <div
@@ -250,19 +219,7 @@ export default function Login() {
               style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}
             >
               <div className="feature-icon-box">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#FCD535"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3z" />
-                </svg>
+                <i className="fa-solid fa-star" style={{ fontSize: '24px', color: '#FCD535' }}></i>
               </div>
               <div>
                 <div
@@ -331,19 +288,7 @@ export default function Login() {
                   justifyContent: "center",
                 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="28"
-                  height="28"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#181a20"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
+                <i className="fa-solid fa-cube" style={{ fontSize: '28px', color: '#181a20' }}></i>
               </div>
             </div>
 

@@ -1,6 +1,7 @@
 export default function PrintPreview({
   customers,
   signatory,
+  includeSignatureImage = true,
   postCode,
   postName,
 }) {
@@ -67,7 +68,6 @@ export default function PrintPreview({
                 />
               </div>
               <br />
-              <br />
               {/* Document Ref & Sender Address */}
               <div className="print-letter-head">
                 <div className="print-ref">
@@ -76,10 +76,8 @@ export default function PrintPreview({
                 <div className="print-sender">{senderName}</div>
               </div>
               <br />
-              <br />
               {/* Date */}
               <div className="print-date">{formattedDate}</div>
-              <br />
               <br />
               {/* Metadata: Subject, To, Enclosures */}
               <div className="print-subject-block">
@@ -141,31 +139,51 @@ export default function PrintPreview({
                 บริษัท ไปรษณีย์ไทย จำกัด (ปณท) หวังเป็นอย่างยิ่งว่าจะได้รับความอนุเคราะห์จากท่านในการดำเนินการข้างต้น เพื่อเสริมสร้างประสบการณ์การใช้บริการร่วมกันอย่างยั่งยืนและขอขอบคุณมา ณ โอกาสนี้
               </p>
               </div>
-              <br />
-              {/* Signature Block */}
-              {signatory && (
-                <div className="print-signature-block">
-                  <div className="print-signoff">ขอแสดงความนับถือ</div>
-                  <div className="print-signature-img-container">
-                    {signatory.signature_url && (
-                      <img
-                        src={signatory.signature_url}
-                        alt="ลายเซ็น"
-                        crossOrigin="anonymous"
-                        className="print-signature-img"
-                      />
-                    )}
-                  </div>
-                  <div className="print-signature-name-wrapper">
-                    <div className="print-signature-name">
-                      ({signatory.name})
-                    </div>
-                    <div className="print-signature-position">
-                      {signatory.position}
-                    </div>
-                  </div>
+              {/* QR Code and Signature Container */}
+              <div style={{ display: 'flex', alignItems: 'flex-end', marginTop: '20px', pageBreakInside: 'avoid' }}>
+                
+                {/* QR Code (Left Side) */}
+                <div style={{ width: '50%', paddingRight: '20px' }}>
+                  <img 
+                    src="/images/footer-logo.png" 
+                    alt="QR Code" 
+                    style={{ width: 'auto', height: '120px', marginBottom: 0, objectFit: 'contain' }} 
+                  />
                 </div>
-              )}
+
+                {/* Signature Block (Right Side) */}
+                {signatory && (
+                  <div className="print-signature-block" style={{ margin: 0, width: '50%' }}>
+                    <div className="print-signoff">ขอแสดงความนับถือ</div>
+                    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <div className="print-signature-img-container" style={{ width: '100%', justifyContent: 'center' }}>
+                        {signatory.signature_url && includeSignatureImage && (
+                          <img
+                            src={signatory.signature_url}
+                            alt="ลายเซ็น"
+                            crossOrigin="anonymous"
+                            className="print-signature-img"
+                          />
+                        )}
+                      </div>
+                      <div className="print-signature-name-wrapper">
+                        <div className="print-signature-name">
+                          ({signatory.name})
+                        </div>
+                        <div className="print-signature-position">
+                          {signatory.position}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Contact Info Footer (Bottom Left) */}
+              <div className="print-footer" style={{ marginTop: '16px' }}>
+                <div>{senderName}</div>
+                <div>โทร. {signatory?.tel || '-'}</div>
+              </div>
             </div>
           );
         })}

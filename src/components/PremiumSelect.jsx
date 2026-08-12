@@ -44,18 +44,18 @@ export default function PremiumSelect({ options, value, onChange, placeholder, s
         onMouseOut={(e) => { if (!disabled && !isOpen) e.currentTarget.style.backgroundColor = '#ffffff'; }}
       >
         {selectedOption ? selectedOption.label : placeholder}
-        <svg 
+        <i 
+          className="fa-solid fa-chevron-down"
           style={{ 
             position: 'absolute', 
-            right: compact ? '8px' : '12px', 
+            right: compact ? '12px' : '16px', 
             top: '50%', 
             transform: `translateY(-50%) rotate(${isOpen ? '180deg' : '0'})`, 
-            transition: 'transform 0.2s ease' 
-          }} 
-          xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#707a8a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+            transition: 'transform 0.2s ease',
+            color: '#707a8a',
+            fontSize: '12px'
+          }}
+        ></i>
       </div>
 
       {isOpen && (

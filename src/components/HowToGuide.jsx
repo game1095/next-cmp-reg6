@@ -6,211 +6,264 @@ export default function HowToGuide() {
       id: 1,
       title: 'ค้นหาและเลือกลูกค้า',
       description: 'ใช้กล่องค้นหาเพื่อหาชื่อลูกค้าที่ต้องการ และคลิกที่แถวหรือช่องทำเครื่องหมายเพื่อเลือกรายการ (สามารถเลือกได้หลายรายการพร้อมกัน)',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.3-4.3"></path>
-          <path d="m9 11 1.5 1.5 3-3"></path>
-        </svg>
-      )
+      icon: "fa-solid fa-magnifying-glass",
+      color: "#3b82f6"
     },
     {
       id: 2,
       title: 'ตั้งค่าคำนำหน้าชื่อ',
       description: 'กำหนดคำนำหน้าชื่อให้กับลูกค้าแต่ละราย หรือใช้ฟังก์ชัน "ตั้งทั้งหมด" ในแถบด้านล่างเพื่อกำหนดให้ทุกคนที่เลือกไว้ในคลิกเดียว',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-          <line x1="7" y1="7" x2="7.01" y2="7"></line>
-        </svg>
-      )
+      icon: "fa-solid fa-users",
+      color: "#2dbdb6"
     },
     {
       id: 3,
       title: 'เลือกผู้มีอำนาจลงนาม',
       description: 'ในแถบเครื่องมือด้านล่างสุด ให้เลือกผู้ที่จะลงนามในเอกสาร (ระบบจะจดจำค่าเริ่มต้นที่คุณเคยตั้งไว้ให้โดยอัตโนมัติ)',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 20h9"></path>
-          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-          <path d="M15 5l3 3"></path>
-        </svg>
-      )
+      icon: "fa-solid fa-file-signature",
+      color: "#FCD535"
     },
     {
       id: 4,
       title: 'พิมพ์เอกสาร',
       description: 'กดปุ่ม "พิมพ์" ระบบจะสร้างเอกสารจดหมายราชการที่มีขนาดตัวอักษร การจัดหน้า และช่องไฟภาษาไทยที่สวยงาม พร้อมสำหรับสั่งพิมพ์ทันที',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 6 2 18 2 18 9"></polyline>
-          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-          <rect x="6" y="14" width="12" height="8"></rect>
-        </svg>
-      )
+      icon: "fa-solid fa-print",
+      color: "#0ecb81"
     }
   ];
 
   return (
     <div style={{
-      padding: 'var(--spacing-2xl) 0',
-      maxWidth: '800px',
-      margin: '0 auto',
-      fontFamily: 'var(--font-family)'
+      minHeight: "100vh",
+      backgroundColor: "var(--theme-canvas)",
+      position: "relative",
+      overflow: "hidden",
+      paddingBottom: "120px"
     }}>
       <style>{`
-        @keyframes staggerFadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUpFade {
+          from { opacity: 0; transform: translateY(40px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        @keyframes lineGrow {
-          from { height: 0; opacity: 0; }
-          to { height: 32px; opacity: 1; }
+        @keyframes floatAnim {
+          0% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(2deg); }
+          100% { transform: translateY(0px) rotate(0deg); }
         }
-        .animate-item {
-          opacity: 0;
-          animation: staggerFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        @keyframes glowPulse {
+          0% { box-shadow: 0 0 20px rgba(252,213,53,0.3), inset 0 0 10px rgba(252,213,53,0.2); }
+          50% { box-shadow: 0 0 40px rgba(252,213,53,0.5), inset 0 0 20px rgba(252,213,53,0.3); }
+          100% { box-shadow: 0 0 20px rgba(252,213,53,0.3), inset 0 0 10px rgba(252,213,53,0.2); }
         }
-        .animate-line {
-          opacity: 0;
-          animation: lineGrow 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        @keyframes drawLine {
+          from { height: 0; }
+          to { height: 100%; }
         }
         
-        .guide-step-card {
+        .bg-grid {
+          background-size: 40px 40px;
+          background-image: linear-gradient(to right, rgba(128,128,128,0.15) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(128,128,128,0.15) 1px, transparent 1px);
+          mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+          -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, var(--primary) 0%, #b45309 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          color: transparent;
+        }
+
+        .guide-step-container {
           display: flex;
-          align-items: flex-start;
-          gap: 24px;
-          padding: 24px;
-          background-color: var(--theme-canvas);
-          border: 1px solid var(--theme-border);
-          border-radius: 16px;
+          align-items: stretch;
           position: relative;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          z-index: 1;
+          margin-bottom: 40px;
+          opacity: 0;
+          animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
-        .guide-step-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-          border-color: var(--primary);
+
+        /* The continuous line */
+        .timeline-line {
+          position: absolute;
+          left: 31px;
+          top: 64px;
+          bottom: -40px; /* extends to the next item */
+          width: 2px;
+          background: linear-gradient(to bottom, rgba(252, 213, 53, 0.6) 0%, rgba(252, 213, 53, 0.1) 100%);
+          transform-origin: top;
+          animation: drawLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
-        .guide-step-icon {
+
+        /* Hide line on last item */
+        .guide-step-container:last-child .timeline-line {
+          display: none;
+        }
+
+        .guide-step-icon-wrapper {
+          width: 64px;
+          height: 64px;
           flex-shrink: 0;
-          width: 56px;
-          height: 56px;
-          border-radius: 12px;
-          background-color: var(--theme-surface-strong);
-          color: var(--theme-ink);
+          border-radius: 50%;
+          background-color: var(--theme-canvas);
+          border: 2px solid var(--theme-border);
           display: flex;
           align-items: center;
           justify-content: center;
+          margin-right: 32px;
+          position: relative;
+          z-index: 2;
           transition: all 0.3s ease;
-        }
-        
-        .guide-step-card:hover .guide-step-icon {
-          background-color: var(--primary);
-          color: var(--on-primary);
-          transform: scale(1.05);
+          box-shadow: 0 8px 16px rgba(0,0,0,0.04);
         }
 
-        .guide-step-number {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 24px;
-          height: 24px;
-          border-radius: 6px;
+        .guide-step-card {
+          flex: 1;
           background-color: var(--theme-surface-strong);
-          color: var(--theme-ink);
-          font-size: 12px;
-          font-weight: 700;
-          margin-right: 12px;
-          transition: all 0.3s ease;
+          border: 1px solid var(--theme-border);
+          border-radius: var(--rounded-xl);
+          padding: 32px;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          position: relative;
         }
 
-        .guide-step-card:hover .guide-step-number {
-          background-color: var(--primary);
-          color: var(--on-primary);
+        .guide-step-container:hover .guide-step-icon-wrapper {
+          border-color: var(--primary);
+          box-shadow: 0 0 20px rgba(252, 213, 53, 0.2);
+          transform: scale(1.1);
+        }
+
+        .guide-step-container:hover .guide-step-card {
+          transform: translateX(8px);
+          border-color: rgba(252, 213, 53, 0.4);
+          box-shadow: 0 16px 32px rgba(0,0,0,0.08);
         }
       `}</style>
 
-      {/* Hero Header */}
-      <div className="animate-item" style={{ textAlign: 'center', marginBottom: '48px', animationDelay: '0.1s' }}>
-        <h1 style={{ 
-          fontSize: '36px', 
-          fontWeight: 700, 
-          letterSpacing: '-0.5px',
-          color: 'var(--theme-ink)', 
-          marginBottom: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '12px'
-        }}>
-          <span style={{ 
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            width: '44px', height: '44px', borderRadius: '12px',
-            backgroundColor: 'var(--primary)',
-            color: 'var(--on-primary)',
-          }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-          </span>
-          วิธีการออกจดหมาย
-        </h1>
-        <p style={{ 
-          fontSize: '16px', 
-          color: 'var(--muted)', 
-          maxWidth: '500px', 
-          margin: '0 auto',
-          lineHeight: 1.6
-        }}>
-          เรียนรู้ขั้นตอนการเตรียมเอกสารและสั่งพิมพ์แบบมืออาชีพ ผ่าน 4 ขั้นตอนง่ายๆ ที่ถูกออกแบบมาเพื่อความรวดเร็ว
-        </p>
-      </div>
+      {/* Decorative Grid Background */}
+      <div
+        className="bg-grid"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
 
-      {/* Steps Timeline */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', position: 'relative' }}>
-        {steps.map((step, index) => (
-          <div key={step.id} style={{ position: 'relative' }}>
-            <div className="animate-item guide-step-card" style={{ animationDelay: `${0.1 + (index + 1) * 0.1}s` }}>
+      {/* Spectacular Animated Orbs */}
+      <div
+        style={{
+          position: "absolute",
+          top: "5%",
+          right: "20%",
+          width: "400px",
+          height: "400px",
+          background: "radial-gradient(circle, rgba(252,213,53,0.05) 0%, transparent 70%)",
+          zIndex: 0,
+          pointerEvents: "none",
+          filter: "blur(40px)",
+          animation: "floatAnim 10s ease-in-out infinite alternate",
+        }}
+      />
+
+      <div style={{ maxWidth: "860px", margin: "0 auto", padding: "80px 24px 0", position: "relative", zIndex: 1 }}>
+        
+        {/* ── 1. Page Header (Hero Band Style) ── */}
+        <div style={{ textAlign: "center", marginBottom: "80px", animation: "slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both" }}>
+          <div
+            style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              width: "64px", height: "64px", borderRadius: "16px",
+              background: "linear-gradient(135deg, rgba(252,213,53,0.15) 0%, rgba(252,213,53,0.05) 100%)",
+              color: "var(--primary)", marginBottom: "24px",
+              boxShadow: "0 8px 32px rgba(252,213,53,0.15)", border: "1px solid rgba(252,213,53,0.2)",
+            }}
+          >
+            <i className="fa-solid fa-book-open" style={{ fontSize: "28px" }}></i>
+          </div>
+          <h1
+            style={{
+              fontSize: "48px", color: "var(--theme-ink)", marginBottom: "20px",
+              letterSpacing: "-0.5px", fontWeight: 700, lineHeight: 1.1,
+              fontFamily: "var(--font-family)"
+            }}
+          >
+            How it works.<br />
+            <span className="gradient-text">วิธีการออกจดหมาย</span>
+          </h1>
+          <p
+            style={{
+              maxWidth: "580px", margin: "0 auto", lineHeight: 1.6,
+              fontSize: "16px", color: "var(--muted)", fontWeight: 400
+            }}
+          >
+            เรียนรู้ขั้นตอนการเตรียมเอกสารและสั่งพิมพ์แบบมืออาชีพ ผ่าน 4 ขั้นตอนง่ายๆ ที่ถูกออกแบบมาเพื่อความรวดเร็วและเป็นเลิศ
+          </p>
+        </div>
+
+        {/* ── 2. The Timeline ── */}
+        <div style={{ position: "relative" }}>
+          {steps.map((step, index) => (
+            <div 
+              key={step.id} 
+              className="guide-step-container" 
+              style={{ animationDelay: `${0.1 + (index * 0.15)}s` }}
+            >
+              <div className="timeline-line"></div>
               
-              {/* Icon */}
-              <div className="guide-step-icon">
-                {step.icon}
+              <div className="guide-step-icon-wrapper">
+                <i className={step.icon} style={{ fontSize: "24px", color: step.color }}></i>
+                <div style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  width: "24px",
+                  height: "24px",
+                  backgroundColor: "var(--theme-ink)",
+                  color: "var(--theme-canvas)",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
+                }}>
+                  {step.id}
+                </div>
               </div>
 
-              {/* Content */}
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                  <span className="guide-step-number">{step.id}</span>
-                  <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--theme-ink)', margin: 0 }}>
-                    {step.title}
-                  </h3>
-                </div>
-                <p style={{ fontSize: '15px', color: 'var(--muted)', lineHeight: 1.6, margin: 0 }}>
+              <div className="guide-step-card">
+                <h3 style={{ 
+                  fontSize: "20px", 
+                  fontWeight: 700, 
+                  color: "var(--theme-ink)", 
+                  margin: "0 0 12px 0",
+                  fontFamily: "var(--font-family)"
+                }}>
+                  {step.title}
+                </h3>
+                <p style={{ 
+                  fontSize: "15px", 
+                  color: "var(--muted)", 
+                  lineHeight: 1.6, 
+                  margin: 0,
+                  fontWeight: 400
+                }}>
                   {step.description}
                 </p>
               </div>
             </div>
-
-            {/* Connection Line */}
-            {index < steps.length - 1 && (
-              <div className="animate-line" style={{
-                position: 'absolute',
-                left: '52px',
-                bottom: '-32px',
-                width: '2px',
-                height: '32px',
-                backgroundColor: 'var(--theme-border)',
-                transform: 'translateX(-50%)',
-                zIndex: 0,
-                animationDelay: `${0.3 + (index + 1) * 0.1}s`
-              }} />
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      
     </div>
   );
 }

@@ -92,6 +92,16 @@ export default function Signatories() {
 
   return (
     <div>
+      <style>{`
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+          animation: fadeUp 0.4s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
       {/* ── Page Header ── */}
       <div style={{
         display: 'flex',
@@ -159,7 +169,7 @@ export default function Signatories() {
           borderRadius: 'var(--rounded-xl)',
           backgroundColor: 'var(--theme-surface-strong)',
         }}>
-          <img src="/images/empty.svg" alt="Empty" style={{ width: '160px', height: 'auto', opacity: 0.8 }} />
+          <i className="fa-solid fa-file-signature" style={{ fontSize: '64px', color: 'var(--theme-border-strong)', opacity: 0.5, marginBottom: '8px' }}></i>
           <div style={{ color: 'var(--muted)', fontSize: '15px', fontWeight: 500 }}>
             ยังไม่มีผู้มีอำนาจลงนามในระบบ
           </div>
@@ -174,21 +184,23 @@ export default function Signatories() {
           gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
           gap: 'var(--spacing-md)',
         }}>
-          {signatories.map((sig) => {
+          {signatories.map((sig, index) => {
             const isDefault = defaultId === sig.id;
             return (
             <div
               key={sig.id}
+              className="animate-fade-up"
               style={{
                 border: isDefault ? '2px solid var(--primary)' : '1px solid var(--theme-border)',
                 borderRadius: 'var(--rounded-xl)',
                 padding: 'var(--spacing-lg)',
-                backgroundColor: isDefault ? 'rgba(59, 130, 246, 0.04)' : 'var(--theme-canvas)',
+                backgroundColor: isDefault ? 'rgba(252, 213, 53, 0.05)' : 'var(--theme-canvas)',
                 transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
                 position: 'relative',
+                animationDelay: `${index * 0.05}s`,
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.06)';
+                e.currentTarget.style.boxShadow = isDefault ? '0 12px 24px rgba(252, 213, 53, 0.15)' : '0 12px 24px rgba(0,0,0,0.06)';
                 e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseOut={(e) => {
@@ -264,8 +276,8 @@ export default function Signatories() {
                         padding: '6px',
                         fontSize: '12px',
                         fontWeight: 600,
-                        color: 'var(--primary)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                        color: 'var(--theme-ink)',
+                        backgroundColor: 'rgba(252, 213, 53, 0.15)',
                         border: 'none',
                         borderRadius: 'var(--rounded-md)',
                         cursor: 'pointer',
@@ -273,8 +285,8 @@ export default function Signatories() {
                         transition: 'background-color 0.15s',
                         marginBottom: '4px'
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.15)'}
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.08)'}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(252, 213, 53, 0.25)'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(252, 213, 53, 0.15)'}
                     >
                       ★ ตั้งเป็นค่าเริ่มต้น
                     </button>
