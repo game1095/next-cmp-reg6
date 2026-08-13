@@ -23,29 +23,34 @@ const removeImageBackground = (file) => {
         const g = data[i + 1];
         const b = data[i + 2];
         const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-        
+
         // Advanced Signature Extraction with Anti-aliasing preservation
-        const darkThreshold = 50;   // Core ink pixels (fully opaque)
-        const lightThreshold = 100; // Shadows & paper background (fully transparent)
-        
+        const darkThreshold = 120; // Core ink pixels (fully opaque)
+        const lightThreshold = 150; // Shadows & paper background (fully transparent)
+
         if (luminance >= lightThreshold) {
           data[i + 3] = 0; // Transparent
         } else if (luminance <= darkThreshold) {
           data[i + 3] = 255; // Opaque
         } else {
           // Smooth alpha transition for the edges of the ink
-          const alphaRatio = 1 - ((luminance - darkThreshold) / (lightThreshold - darkThreshold));
+          const alphaRatio =
+            1 - (luminance - darkThreshold) / (lightThreshold - darkThreshold);
           data[i + 3] = Math.round(255 * alphaRatio);
         }
       }
 
       ctx.putImageData(imageData, 0, 0);
-      
+
       canvas.toBlob((blob) => {
         if (blob) {
-          const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, ".png"), {
-            type: "image/png",
-          });
+          const newFile = new File(
+            [blob],
+            file.name.replace(/\.[^/.]+$/, ".png"),
+            {
+              type: "image/png",
+            },
+          );
           resolve(newFile);
         } else {
           reject(new Error("Failed to create blob from canvas"));
@@ -224,7 +229,13 @@ export default function SignatoryModal({
       )}
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 var(--spacing-md)" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "0 var(--spacing-md)",
+          }}
+        >
           <Input
             id="sig-name"
             label="ชื่อ-นามสกุล"
@@ -271,7 +282,11 @@ export default function SignatoryModal({
             }}
           >
             ภาพลายเซ็น
-            {!isEditing && <span style={{ color: 'var(--trading-down)', marginLeft: '4px' }}>*</span>}
+            {!isEditing && (
+              <span style={{ color: "var(--trading-down)", marginLeft: "4px" }}>
+                *
+              </span>
+            )}
           </label>
           <div style={{ position: "relative" }}>
             <input
@@ -337,14 +352,25 @@ export default function SignatoryModal({
                       }
                     `}
                   </style>
-                  <div style={{ fontSize: "14px", fontWeight: 600, color: "var(--theme-ink)" }}>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "var(--theme-ink)",
+                    }}
+                  >
                     กำลังลบพื้นหลังอัตโนมัติ...
                   </div>
                 </>
               ) : (
                 <>
-                  <div style={{ color: "inherit", transition: "color 0.2s ease" }}>
-                    <i className="fa-solid fa-cloud-arrow-up" style={{ fontSize: '32px' }}></i>
+                  <div
+                    style={{ color: "inherit", transition: "color 0.2s ease" }}
+                  >
+                    <i
+                      className="fa-solid fa-cloud-arrow-up"
+                      style={{ fontSize: "32px" }}
+                    ></i>
                   </div>
                   <div
                     style={{
@@ -428,7 +454,10 @@ export default function SignatoryModal({
               }}
             >
               {isDefault && (
-                <i className="fa-solid fa-check" style={{ fontSize: '12px', color: 'var(--on-primary)' }}></i>
+                <i
+                  className="fa-solid fa-check"
+                  style={{ fontSize: "12px", color: "var(--on-primary)" }}
+                ></i>
               )}
             </div>
             <input

@@ -140,23 +140,46 @@ export default function PrintPreview({
               </p>
               </div>
               {/* QR Code and Signature Container */}
-              <div style={{ display: 'flex', alignItems: 'flex-end', marginTop: '20px', pageBreakInside: 'avoid' }}>
-                
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  marginTop: "20px",
+                  pageBreakInside: "avoid",
+                }}
+              >
                 {/* QR Code (Left Side) */}
-                <div style={{ width: '50%', paddingRight: '20px' }}>
-                  <img 
-                    src="/images/footer-logo.png" 
-                    alt="QR Code" 
-                    style={{ width: 'auto', height: '120px', marginBottom: 0, objectFit: 'contain' }} 
+                <div style={{ width: "50%", paddingRight: "20px" }}>
+                  <img
+                    src="/images/footer-logo.png"
+                    alt="QR Code"
+                    style={{
+                      width: "auto",
+                      height: "120px",
+                      marginBottom: 0,
+                      objectFit: "contain",
+                    }}
                   />
                 </div>
 
                 {/* Signature Block (Right Side) */}
                 {signatory && (
-                  <div className="print-signature-block" style={{ margin: 0, width: '50%' }}>
+                  <div
+                    className="print-signature-block"
+                    style={{ margin: 0, width: "50%" }}
+                  >
                     <div className="print-signoff">ขอแสดงความนับถือ</div>
-                    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <div className="print-signature-img-container" style={{ width: '100%', justifyContent: 'center' }}>
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div
+                        className="print-signature-img-container"
+                        style={{ width: "100%", justifyContent: "center" }}
+                      >
                         {signatory.signature_url && includeSignatureImage && (
                           <img
                             src={signatory.signature_url}
@@ -180,9 +203,9 @@ export default function PrintPreview({
               </div>
 
               {/* Contact Info Footer (Bottom Left) */}
-              <div className="print-footer" style={{ marginTop: '16px' }}>
+              <div className="print-footer" style={{ marginTop: "16px" }}>
                 <div>{senderName}</div>
-                <div>โทร. {signatory?.tel || '-'}</div>
+                <div>โทร. {signatory?.tel || "-"}</div>
               </div>
             </div>
           );
