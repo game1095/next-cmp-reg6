@@ -225,7 +225,7 @@ a {
   background: white;
   color: black;
   font-family: 'TH Sarabun PSK', 'TH Sarabun New', 'Sarabun', sans-serif;
-  font-size: 16px;
+  font-size: 15pt;
   line-height: 1.25;
 }
 
@@ -374,9 +374,9 @@ a {
 
 .print-footer {
   position: absolute;
-  bottom: 20mm;
+  bottom: 10mm;
   left: 15mm;
-  font-size: 14px;
+  font-size: 15pt;
 }
 
 /* ── Native Print Media Query overrides ── */
