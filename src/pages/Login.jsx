@@ -242,7 +242,7 @@ const resourceLinks = [
     links: [
       {
         name: "Onboard THP Core ปข.6",
-        url: "https://docs.google.com/spreadsheets/d/1fo2HJAkm8CkL_pf43nblZVymSz3bUWtsEsFXs8MQ1xc/edit?gid=976720646#gid=976720646",
+        url: "https://docs.google.com/spreadsheets/d/13YFM1jd4S2K-hGsU1eREXhsuEjIiBB0cEkT__6hHnAc/edit?gid=0#gid=0",
       },
       {
         name: "คู่มือฉบับเต็ม",
@@ -750,12 +750,41 @@ export default function Login() {
             borderTop: "1px solid #2b3139",
           }}
         >
-          <div style={{ color: "#707a8a", fontSize: "14px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", opacity: 0.8 }}>
-              <i className="fa-solid fa-cube" style={{ fontSize: "16px", color: "#FCD535" }}></i>
-              <span style={{ fontWeight: 600, color: "#ffffff", letterSpacing: "-0.5px" }}>CMP-Core</span>
+          <div
+            style={{
+              color: "#707a8a",
+              fontSize: "14px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                opacity: 0.8,
+              }}
+            >
+              <i
+                className="fa-solid fa-cube"
+                style={{ fontSize: "16px", color: "#FCD535" }}
+              ></i>
+              <span
+                style={{
+                  fontWeight: 600,
+                  color: "#ffffff",
+                  letterSpacing: "-0.5px",
+                }}
+              >
+                CMP-Core
+              </span>
             </div>
-            <p style={{ margin: 0, fontWeight: 500, letterSpacing: "0.2px" }}>Better by Design คนทำงานดวด</p>
+            <p style={{ margin: 0, fontWeight: 500, letterSpacing: "0.2px" }}>
+              Better by Design คนทำงานดวด
+            </p>
           </div>
         </div>
       </div>
