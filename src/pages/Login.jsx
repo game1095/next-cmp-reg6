@@ -261,6 +261,10 @@ const resourceLinks = [
         name: "เว็บ BOM-THP-Core",
         url: "https://reg6-bom.thpcore.com/web/database/selector",
       },
+      {
+        name: "รายงานปัญหาการใช้งาน (ใช้ Mail ปณท ดำเนินการ)",
+        url: "https://docs.google.com/spreadsheets/d/1fo2HJAkm8CkL_pf43nblZVymSz3bUWtsEsFXs8MQ1xc/edit?gid=599427105#gid=599427105",
+      },
     ],
   },
 ];
