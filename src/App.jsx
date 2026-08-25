@@ -49,12 +49,12 @@ function App() {
         {/* Public — Login */}
         <Route
           path="/"
-          element={!session ? <Login /> : <Navigate to="/developer" replace />}
+          element={!session ? <Login /> : <Navigate to="/" replace />}
         />
 
         {/* Protected — Customers (default) */}
         <Route
-          path="/developer"
+          path="/"
           element={
             session ? (
               <Layout session={session}>
