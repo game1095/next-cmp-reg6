@@ -48,7 +48,7 @@ function App() {
       <Routes>
         {/* Public — Login */}
         <Route
-          path="/login"
+          path="/"
           element={!session ? <Login /> : <Navigate to="/" replace />}
         />
 
