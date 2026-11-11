@@ -9,33 +9,16 @@ const resourceLinks = [
     icon: "fa-link",
     links: [
       {
-        name: "Onboard THP Core ปข.6",
-        url: "https://docs.google.com/spreadsheets/d/13YFM1jd4S2K-hGsU1eREXhsuEjIiBB0cEkT__6hHnAc/edit?gid=0#gid=0",
-      },
-      {
-        name: "คู่มือฉบับเต็ม (CMP)",
-        url: "https://www.canva.com/design/DAGvSCLX27Y/Hfkvl7HzZVZH3BPzBX-EQg/view?utlId=h8a95ce3478#16",
-      },
-      {
-        name: "คู่มือฉบับย่อ (CMP)",
-        url: "https://www.canva.com/design/DAHR97wsJaI/rfE2rXx0-ZVcDdgTrfvk7Q/view?utlId=h9ed7a6774c",
-      },
-       {
         name: "คู่มือ THP Core",
         url: "https://drive.google.com/drive/folders/163UOLiYvD_q4D5zh_0OvfqjWoDTNApyI",
       },
-      {
-        name: "ระบบออกเอกสารภายนอก",
-        url: "https://next-cmp-reg6-one.vercel.app/",
-      },
-      { name: "เว็บ CMP", url: "https://cmp.thailandpost.com/" },
       {
         name: "เว็บ Omnichannel",
         url: "https://omnichannel.thpcore.com/",
       },
       {
-        name: "รายงานปัญหาการใช้งาน (ใช้ Mail ปณท ดำเนินการ)",
-        url: "https://docs.google.com/spreadsheets/d/1fo2HJAkm8CkL_pf43nblZVymSz3bUWtsEsFXs8MQ1xc/edit?gid=599427105#gid=599427105",
+        name: "คู่มือ BOM สำหรับเขต",
+        url: "https://docs.google.com/document/d/1AJWg6jSHgiAQy6EbU4NmSuJlY6g5ecPe/edit#heading=h.rg4pxxxh7j1q",
       },
     ],
   },
