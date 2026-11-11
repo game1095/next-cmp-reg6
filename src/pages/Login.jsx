@@ -5,238 +5,6 @@ import Button from "../components/Button";
 
 const resourceLinks = [
   {
-    category: "รวมลิ้งก์การกรอกข้อมูล cmp แยกตาม จังหวัด",
-    icon: "fa-map-location-dot",
-    links: [
-      {
-        name: "ปจ.นครสวรรค์ และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/16u20kFr-MZUoK1TMcS2NCPEk10F2VJG2?usp=sharing",
-      },
-      {
-        name: "ปจ.อุทัยธานี และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1QN0EroC5UEdwxy2f_eTcm6LlNykcepkW?usp=drive_link",
-      },
-      {
-        name: "ปจ.กำแพงเพชร และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1DTVyD706bx-qEagJ7HEKMQ4DyNEdZrPg?usp=drive_link",
-      },
-      {
-        name: "ปจ.ตาก และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1E0uvfRUq4rlvet6y3teCHosqlCwegstm?usp=drive_link",
-      },
-      {
-        name: "ปจ.สุโขทัย และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1u0G_W4EsSy9WxcJhwOMVVdFZBckufRRB?usp=drive_link",
-      },
-      {
-        name: "ปจ.พิษณุโลก และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1d-kaVfqPzPdkvYEOq74ejV2D1glhRtX4?usp=drive_link",
-      },
-      {
-        name: "ปจ.พิจิตร และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1LQMWOyaXpPEkmzkzV6uhX3zXMqf7UgRx?usp=drive_link",
-      },
-      {
-        name: "ปจ.เพชรบูรณ์ และที่ทำการในสังกัด",
-        url: "https://drive.google.com/drive/folders/1VAGG9dORmWwjH7p63hffdcppWYD82-tF?usp=drive_link",
-      },
-      {
-        name: "ศป.พิษณุโลก",
-        url: "https://drive.google.com/drive/folders/15fUQ31Io-_vTz29tPXKdxHGX9dPOhq-n?usp=drive_link",
-      },
-      {
-        name: "ปณร./ปณย. (ปจ.พิษณุโลก และ ปจ.พิจิตร)",
-        url: "https://drive.google.com/drive/folders/1CUJ_nLsdNI5KUy8dsD_qGZbbLLFqn2ui?usp=drive_link",
-      },
-    ],
-  },
-  {
-    category: "ที่ทำการ Phase 1 (11 - 15 ส.ค. 2569)",
-    icon: "fa-1",
-    links: [
-      {
-        name: "60110 ปณ.หนองบัว",
-        url: "https://docs.google.com/spreadsheets/d/1sbgnTyB9iPTgftU9tkFcH6NpNAzfPdRRUEr8dHMmyvo/edit?usp=drive_link",
-      },
-      {
-        name: "60240 ปณ.หนองเบน",
-        url: "https://docs.google.com/spreadsheets/d/13kH1M5OWJqSkNL2VdDJISuQsXJPTt5rvk2Y7ot1PANQ/edit?usp=drive_link",
-      },
-    ],
-  },
-  {
-    category: "ที่ทำการ Phase 2 (17 - 21 ส.ค. 2569)",
-    icon: "fa-2",
-    links: [
-      {
-        name: "60170 ปณ.โกรกพระ",
-        url: "https://docs.google.com/spreadsheets/d/1-m0b72N5w7XqWncVtqSKuiy8GqNxX0Zfk_PzzeauKtU/edit?usp=drive_link",
-      },
-      {
-        name: "61120 ปณ.ทัพทัน",
-        url: "https://docs.google.com/spreadsheets/d/1D28gBeJDu7kH2Na7KnAW8_821MjxjPS0XiDBYAyMXJk/edit?usp=drive_link",
-      },
-      {
-        name: "62130 ปณ.ขาณุวรลักษบุรี",
-        url: "https://docs.google.com/spreadsheets/d/19Wu5YrwvyOdTzX07BnGv1zaJ6i1Q4Dl4lAL04ahMFiU/edit?usp=drive_link",
-      },
-      {
-        name: "63120 ปณ.บ้านตาก",
-        url: "https://docs.google.com/spreadsheets/d/1X6HnSAnw70WnI3yROdkLp9U_WwuWyyR2_GlAdDXDbL8/edit?usp=drive_link",
-      },
-      {
-        name: "64220 ปณ.บ้านสวน",
-        url: "https://docs.google.com/spreadsheets/d/1MZL3YDnbPZucxAKidx-Mta3A_VX65i9Sc4qZ67_4kOk/edit?usp=drive_link",
-      },
-      {
-        name: "64230 ปณ.บ้านใหม่ไชยมงคล",
-        url: "https://docs.google.com/spreadsheets/d/1Q3tmsJvVbcGbYX9SZyNWgCtrNoU5up09Q9AYWuVW5-o/edit?usp=drive_link",
-      },
-      {
-        name: "65160 ปณ.วัดโบสถ์",
-        url: "https://docs.google.com/spreadsheets/d/1saJelwMv7m54FcbU0SXZvIfStu76ZNIXuS7ft-DlVHA/edit?usp=drive_link",
-      },
-      {
-        name: "65220 ปณ.แก่งโสภา",
-        url: "https://docs.google.com/spreadsheets/d/1qi5n2y3TLeXAP3XsgegH8y6F68E5WNuxl_xJYsDgzqM/edit?usp=drive_link",
-      },
-      {
-        name: "66190 ปณ.โพธิ์ประทับช้าง",
-        url: "https://docs.google.com/spreadsheets/d/1qOQGqjJ8b8lF_4RigtP1eTl5k25lBFG66rOw0fpuRVc/edit?usp=drive_link",
-      },
-      {
-        name: "67180 ปณ.พุเตย",
-        url: "https://docs.google.com/spreadsheets/d/1wc974O_9ku1_AuDwu6oq4kqJiHRKa5J9qBw_p7RLLs8/edit?usp=drive_link",
-      },
-    ],
-  },
-  {
-    category: "ที่ทำการ Phase 3 (ยังไม่กำหนดเวลา)",
-    icon: "fa-3",
-    links: [
-      {
-        name: "60220 ปณ.ไพศาลี",
-        url: "https://docs.google.com/spreadsheets/d/1y50sv5xQQ9LgkV4yis5SXmarrbRwD3ucG-zwTq28e9U/edit?usp=drive_link",
-      },
-      {
-        name: "61150 ปณ.สว่างอารมณ์",
-        url: "https://docs.google.com/spreadsheets/d/1buTRnOCc8Vjscgwq1kKcDrVqfbwA3XmXe1_jh0twzkw/edit?usp=drive_link",
-      },
-      {
-        name: "62140 ปณ.สลกบาตร",
-        url: "https://docs.google.com/spreadsheets/d/1sS_kTzj-FTxvoyFKxtl6ELni7_n14gupQjsBJS_ntVc/edit?usp=drive_link",
-      },
-      {
-        name: "62150 ปณ.ไทรงาม",
-        url: "https://docs.google.com/spreadsheets/d/1HqfAho_V1LCD63jRFRpcg8Z1qcEr7584wqDzoAy4bzc/edit?usp=drive_link",
-      },
-      {
-        name: "62170 ปณ.ลานกระบือ",
-        url: "https://docs.google.com/spreadsheets/d/1LX7_YA79im99qGCb0gZLpnqYEJ6pX-e9r-nbBxF84Mw/edit?usp=drive_link",
-      },
-      {
-        name: "62190 ปณ.ทุ่งทราย",
-        url: "https://docs.google.com/spreadsheets/d/1eAJnv_WqdGIzCEI4WgX_zzMQX3khoqqqDR-zUmb10J8/edit?usp=drive_link",
-      },
-      {
-        name: "63130 ปณ.สามเงา",
-        url: "https://docs.google.com/spreadsheets/d/1hdgvMwP0SvsDtTxUKH66USsAF03s-IAsVd_OFVXglt8/edit?usp=drive_link",
-      },
-      {
-        name: "63140 ปณ.แม่ระมาด",
-        url: "https://docs.google.com/spreadsheets/d/1KoiAk_duKFnSH-jt7FWZzwLc22Xqp1zLa7ROh-w6E-g/edit?usp=drive_link",
-      },
-      {
-        name: "63150 ปณ.ท่าสองยาง",
-        url: "https://docs.google.com/spreadsheets/d/1CqeUriJBCW6CkpS5r9_s4QP-DH6yvqW_iap0O8OXSGw/edit?usp=drive_link",
-      },
-      {
-        name: "63170 ปณ.อุ้มผาง",
-        url: "https://docs.google.com/spreadsheets/d/10izSZolsuo3XXv4nJ_hlNNuoA-9V808bZ4lEX4AHVw0/edit?usp=drive_link",
-      },
-      {
-        name: "63180 ปณ.วังเจ้า",
-        url: "https://docs.google.com/spreadsheets/d/1WMs_L8c7t-EbHmZdst6d6fZ-Oq_IU4gW-1CL7dBajQY/edit?usp=drive_link",
-      },
-      {
-        name: "64170 ปณ.กงไกรลาศ",
-        url: "https://docs.google.com/spreadsheets/d/1jvYsuBe3nu5aH1hMBDK7XYdTiui7nJEJu9mtdbvTGjQ/edit?usp=drive_link",
-      },
-      {
-        name: "64190 ปณ.ท่าชัย",
-        url: "https://docs.google.com/spreadsheets/d/1Hp9zB7Pyf26gE1d_-IXRSO0vusldYSRKRMXsk32tR0Q/edit?usp=drive_link",
-      },
-      {
-        name: "64210 ปณ.เมืองเก่า",
-        url: "https://docs.google.com/spreadsheets/d/1hZhmrCTclkdlavjWpQFqSNyFyb8AHKfV2OfxQNEowuY/edit?usp=drive_link",
-      },
-      {
-        name: "65180 ปณ.หนองตม",
-        url: "https://docs.google.com/spreadsheets/d/1y4wsiXUfWhMaIxcJd2o0S3Ra5zTF63qkxyGXDvCZRyc/edit?usp=drive_link",
-      },
-      {
-        name: "65190 ปณ.เนินมะปราง",
-        url: "https://docs.google.com/spreadsheets/d/1vhLGyHiODAjmbLtfnEjK_gl8K7HRe66FJhBQs7qpAKs/edit?usp=drive_link",
-      },
-      {
-        name: "66150 ปณ.ทับคล้อ",
-        url: "https://docs.google.com/spreadsheets/d/1_RwwVizwbuvqLyyehM0CdGNGZsV7YNGBwNibOmgVqe4/edit?usp=drive_link",
-      },
-      {
-        name: "66160 ปณ.สากเหล็ก",
-        url: "https://docs.google.com/spreadsheets/d/1jMq7NxRXOEPgpxlO79Hnfc3oXk7fpGL1BKXAnskuqrI/edit?usp=drive_link",
-      },
-      {
-        name: "66170 ปณ.หัวดง",
-        url: "https://docs.google.com/spreadsheets/d/1uvOE1MxgiABGNF2Rrb2usEP5j40UKE31wjLlrezg7go/edit?usp=drive_link",
-      },
-      {
-        name: "66210 ปณ.วังตะกู",
-        url: "https://docs.google.com/spreadsheets/d/1H9OG2f-MWxIZhJ_D_QMP8H2tG3F0yrY_rDbBc4NOHFU/edit?usp=drive_link",
-      },
-      {
-        name: "66220 ปณ.กำแพงดิน",
-        url: "https://docs.google.com/spreadsheets/d/1n7DGyR1k93eqEHxlSkzUrEYzET8I1NcWkin-0eRLfKE/edit?usp=drive_link",
-      },
-      {
-        name: "66230 ปณ.เขาทราย",
-        url: "https://docs.google.com/spreadsheets/d/1DTSMzijhEdxhvVbr6Mxvutwrz6x2C61A7H55H1zD-_A/edit?usp=drive_link",
-      },
-      {
-        name: "67170 ปณ.ศรีเทพ",
-        url: "https://docs.google.com/spreadsheets/d/15wbQNEUjctyRxqvoX8PTnkGUgtawxIumXjEWK0Fd4B4/edit?usp=drive_link",
-      },
-      {
-        name: "67190 ปณ.ดงขุย",
-        url: "https://docs.google.com/spreadsheets/d/17qk7HQX3HGIQHPMVOcsUMnsPeNtsGE826B8opfcm6Js/edit?usp=drive_link",
-      },
-      {
-        name: "67210 ปณ.วังชมภู",
-        url: "https://docs.google.com/spreadsheets/d/1ejCMHBC6NEaBDl0qj8BUsz-rjzobIBdP7bN-N8_BFi0/edit?usp=drive_link",
-      },
-      {
-        name: "67220 ปณ.นาเฉลียง",
-        url: "https://docs.google.com/spreadsheets/d/1Sv-wm1JnyyIO0hJUSemGjzSm9OJf_krxWv94WDt0vVU/edit?usp=drive_link",
-      },
-      {
-        name: "67240 ปณ.วังโป่ง",
-        url: "https://docs.google.com/spreadsheets/d/1rSKpoZT5Gets-qQlQkzPnt7ok3N4wZnSnu-t29ipOco/edit?usp=drive_link",
-      },
-      {
-        name: "67250 ปณ.ท่าพล",
-        url: "https://docs.google.com/spreadsheets/d/1LbX53leiSwHOAU41uBwKayTeIz5MPy8Px-2hO15y7EI/edit?usp=drive_link",
-      },
-      {
-        name: "67270 ปณ.เขาค้อ",
-        url: "https://docs.google.com/spreadsheets/d/1CbPcLNGBfGT5yr2YnhM1sOg7JSRnzE4mYHKv0ux54Eo/edit?usp=drive_link",
-      },
-      {
-        name: "67280 ปณ.แคมป์สน",
-        url: "https://docs.google.com/spreadsheets/d/1EyvltjhIfOfhofEcJcrBZU95SMTSVhTxFsDzN_mk0Ro/edit?usp=drive_link",
-      },
-    ],
-  },
-  {
     category: "Other Resources",
     icon: "fa-link",
     links: [
@@ -265,6 +33,54 @@ const resourceLinks = [
         name: "รายงานปัญหาการใช้งาน (ใช้ Mail ปณท ดำเนินการ)",
         url: "https://docs.google.com/spreadsheets/d/1fo2HJAkm8CkL_pf43nblZVymSz3bUWtsEsFXs8MQ1xc/edit?gid=599427105#gid=599427105",
       },
+    ],
+  },
+  {
+    category: "การเข้าใช้งานระบบ BOM (สำหรับ CMP)",
+    icon: "fa-server",
+    links: [
+      { name: "60110 ปณ.หนองบัว", url: "https://reg6-bom.thpcore.com/web/login?db=60110" },
+      { name: "60220 ปณ.ไพศาลี", url: "https://reg6-bom.thpcore.com/web/login?db=60220" },
+      { name: "60170 ปณ.โกรกพระ", url: "https://reg6-bom.thpcore.com/web/login?db=60170" },
+      { name: "60240 ปณ.หนองเบน", url: "https://reg6-bom.thpcore.com/web/login?db=60240" },
+      { name: "61120 ปณ.ทัพทัน", url: "https://reg6-bom.thpcore.com/web/login?db=61120" },
+      { name: "61150 ปณ.สว่างอารมณ์", url: "https://reg6-bom.thpcore.com/web/login?db=61150" },
+      { name: "62140 ปณ.สลกบาตร", url: "https://reg6-bom.thpcore.com/web/login?db=62140" },
+      { name: "62150 ปณ.ไทรงาม", url: "https://reg6-bom.thpcore.com/web/login?db=62150" },
+      { name: "62190 ปณ.ทุ่งทราย", url: "https://reg6-bom.thpcore.com/web/login?db=62190" },
+      { name: "62130 ปณ.ขาณุวรลักษบุรี", url: "https://reg6-bom.thpcore.com/web/login?db=62130" },
+      { name: "62170 ปณ.ลานกระบือ", url: "https://reg6-bom.thpcore.com/web/login?db=62170" },
+      { name: "64210 ปณ.เมืองเก่า", url: "https://reg6-bom.thpcore.com/web/login?db=64210" },
+      { name: "64230 ปณ.บ้านใหม่ไชยมงคล", url: "https://reg6-bom.thpcore.com/web/login?db=64230" },
+      { name: "64190 ปณ.ท่าชัย", url: "https://reg6-bom.thpcore.com/web/login?db=64190" },
+      { name: "64220 ปณ.บ้านสวน", url: "https://reg6-bom.thpcore.com/web/login?db=64220" },
+      { name: "65160 ปณ.วัดโบสถ์", url: "https://reg6-bom.thpcore.com/web/login?db=65160" },
+      { name: "65180 ปณ.หนองตม", url: "https://reg6-bom.thpcore.com/web/login?db=65180" },
+      { name: "64170 ปณ.กงไกรลาศ", url: "https://reg6-bom.thpcore.com/web/login?db=64170" },
+      { name: "65220 ปณ.แก่งโสภา", url: "https://reg6-bom.thpcore.com/web/login?db=65220" },
+      { name: "65190 ปณ.เนินมะปราง", url: "https://reg6-bom.thpcore.com/web/login?db=65190" },
+      { name: "67210 ปณ.วังชมภู", url: "https://reg6-bom.thpcore.com/web/login?db=67210" },
+      { name: "67220 ปณ.นาเฉลียง", url: "https://reg6-bom.thpcore.com/web/login?db=67220" },
+      { name: "67280 ปณ.แคมป์สน", url: "https://reg6-bom.thpcore.com/web/login?db=67280" },
+      { name: "67250 ปณ.ท่าพล", url: "https://reg6-bom.thpcore.com/web/login?db=67250" },
+      { name: "67170 ปณ.ศรีเทพ", url: "https://reg6-bom.thpcore.com/web/login?db=67170" },
+      { name: "67270 ปณ.เขาค้อ", url: "https://reg6-bom.thpcore.com/web/login?db=67270" },
+      { name: "66160 ปณ.สากเหล็ก", url: "https://reg6-bom.thpcore.com/web/login?db=66160" },
+      { name: "66170 ปณ.หัวดง", url: "https://reg6-bom.thpcore.com/web/login?db=66170" },
+      { name: "67180 ปณ.พุเตย", url: "https://reg6-bom.thpcore.com/web/login?db=67180" },
+      { name: "67190 ปณ.ดงขุย", url: "https://reg6-bom.thpcore.com/web/login?db=67190" },
+      { name: "66220 ปณ.กำแพงดิน", url: "https://reg6-bom.thpcore.com/web/login?db=66220" },
+      { name: "66150 ปณ.ทับคล้อ", url: "https://reg6-bom.thpcore.com/web/login?db=66150" },
+      { name: "67240 ปณ.วังโป่ง", url: "https://reg6-bom.thpcore.com/web/login?db=67240" },
+      { name: "66230 ปณ.เขาทราย", url: "https://reg6-bom.thpcore.com/web/login?db=66230" },
+      { name: "63140 ปณ.แม่ระมาด", url: "https://reg6-bom.thpcore.com/web/login?db=63140" },
+      { name: "66190 ปณ.โพธิ์ประทับช้าง", url: "https://reg6-bom.thpcore.com/web/login?db=66190" },
+      { name: "66210 ปณ.วังตะกู", url: "https://reg6-bom.thpcore.com/web/login?db=66210" },
+      { name: "63150 ปณ.ท่าสองยาง", url: "https://reg6-bom.thpcore.com/web/login?db=63150" },
+      { name: "63170 ปณ.อุ้มผาง", url: "https://reg6-bom.thpcore.com/web/login?db=63170" },
+      { name: "63180 ปณ.วังเจ้า", url: "https://reg6-bom.thpcore.com/web/login?db=63180" },
+      { name: "63120 ปณ.บ้านตาก", url: "https://reg6-bom.thpcore.com/web/login?db=63120" },
+      { name: "63130 ปณ.สามเงา", url: "https://reg6-bom.thpcore.com/web/login?db=63130" },
     ],
   },
 ];
@@ -306,11 +122,8 @@ export default function Login() {
     .filter((section) => section.links.length > 0);
 
   const getShortName = (name) => {
-    if (name.includes("แยกตาม จังหวัด")) return "รายจังหวัด";
-    if (name.includes("Phase 1")) return "Phase 1";
-    if (name.includes("Phase 2")) return "Phase 2";
-    if (name.includes("Phase 3")) return "Phase 3";
     if (name.includes("Other")) return "คู่มือการใช้งาน และ รวมลิงก์";
+    if (name.includes("ระบบ BOM")) return "ระบบ BOM";
     return name;
   };
 
@@ -424,7 +237,7 @@ export default function Login() {
         .animate-stagger-2 { animation: staggerFadeUp 0.4s ease-out forwards; animation-delay: 0.2s; opacity: 0; }
         .animate-stagger-3 { animation: staggerFadeUp 0.4s ease-out forwards; animation-delay: 0.3s; opacity: 0; }
         .animate-stagger-4 { animation: staggerFadeUp 0.4s ease-out forwards; animation-delay: 0.4s; opacity: 0; }
-        
+
         /* Layout media queries */
         @media (max-width: 900px) {
           .login-layout-container {
