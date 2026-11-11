@@ -13,12 +13,16 @@ const resourceLinks = [
         url: "https://docs.google.com/spreadsheets/d/13YFM1jd4S2K-hGsU1eREXhsuEjIiBB0cEkT__6hHnAc/edit?gid=0#gid=0",
       },
       {
-        name: "คู่มือฉบับเต็ม",
+        name: "คู่มือฉบับเต็ม (CMP)",
         url: "https://www.canva.com/design/DAGvSCLX27Y/Hfkvl7HzZVZH3BPzBX-EQg/view?utlId=h8a95ce3478#16",
       },
       {
-        name: "คู่มือฉบับย่อ",
+        name: "คู่มือฉบับย่อ (CMP)",
         url: "https://www.canva.com/design/DAHR97wsJaI/rfE2rXx0-ZVcDdgTrfvk7Q/view?utlId=h9ed7a6774c",
+      },
+       {
+        name: "คู่มือ THP Core",
+        url: "https://drive.google.com/drive/folders/163UOLiYvD_q4D5zh_0OvfqjWoDTNApyI",
       },
       {
         name: "ระบบออกเอกสารภายนอก",
@@ -26,8 +30,8 @@ const resourceLinks = [
       },
       { name: "เว็บ CMP", url: "https://cmp.thailandpost.com/" },
       {
-        name: "เว็บ BOM-THP-Core",
-        url: "https://reg6-bom.thpcore.com/web/database/selector",
+        name: "เว็บ Omnichannel",
+        url: "https://omnichannel.thpcore.com/",
       },
       {
         name: "รายงานปัญหาการใช้งาน (ใช้ Mail ปณท ดำเนินการ)",
